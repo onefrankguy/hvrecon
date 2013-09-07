@@ -15,16 +15,14 @@
 }
 .row {
   display: block;
-  width: 100px;
-  height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .tile {
   display: inline-block;
   height: 20px;
   width: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 </style>
 </head>
@@ -82,11 +80,11 @@ var setup = function () {
   for (y = 0; y < numRows; y += 1) {
     row = document.createElement("div");
     row.setAttribute("class", "row");
+    row.style.top = ((y * tileHeight) - tileHeight)+"px";
+    row.style.left = "0px";
     for (x = 0; x < numCols; x += 1) {
       tile = document.createElement("span");
       tile.setAttribute("class", "snow tile");
-      tile.style.top = ((y * tileHeight) - tileHeight)+"px";
-      tile.style.left = (x * tileWidth)+"px";
       row.appendChild(tile);
     }
     background.appendChild(row);
@@ -94,7 +92,7 @@ var setup = function () {
 };
 
 var movey = function (element, delta, max) {
-  if (element === undefined) {
+  if (!element || !element.style) {
     return;
   }
   if (element.style.top === "") {
@@ -117,10 +115,7 @@ var render = function (time) {
   var y = 0;
   var offset = 1;
   for (y = 0; y < rows.length; y += 1) {
-    tiles = rows[y].childNodes;
-    for (x = 0; x < tiles.length; x += 1) {
-      movey(tiles[x], offset, canvasHeight);
-    }
+    movey(rows[y], offset, canvasHeight);
   }
   requestAnimationFrame(render);
 };
