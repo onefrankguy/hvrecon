@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<title>Hard Vacuum: Recon</title>
+<style type="text/css">
+#background {
+  position: relative;
+}
+#background .tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+</style>
+</head>
+<body>
+<div id="background">
+  <img id="snow" class="tile" src="img/snow.png"/>
+</div>
+<script type="text/javascript">
+var $ = function (selector) {
+  if (selector.indexOf("#") === 0) {
+    return document.getElementById(selector.slice(1));
+  }
+  if (selector.indexOf(".") === 0) {
+    return document.getElementByClassName(selector.slice(1));
+  }
+  return undefined;
+};
+
+var render = function () {
+  var snow = $("#snow");
+  if (snow.style.top === "") {
+    snow.style.top = "0px";
+  }
+  var offset = parseInt(snow.style.top);
+  if (offset > 320) {
+    offset = 0;
+  }
+  offset += 1;
+  snow.style.top = ""+offset+"px";
+  setTimeout(render, 17);
+};
+
+render();
+</script>
+</body>
+</html>
