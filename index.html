@@ -38,6 +38,8 @@ var $ = function (selector) {
   return null;
 };
 
+var lastFrame = new Date();
+
 var setup = function () {
   var x = 0;
   var y = 0;
@@ -79,12 +81,16 @@ var render = function () {
   var tiles = null;
   var x = 0;
   var y = 0;
+  var now = new Date();
+  var delta = now - lastFrame;
+  var offset = 1 * (delta / 20);
   for (y = 0; y < rows.length; y += 1) {
     tiles = rows[y].childNodes;
     for (x = 0; x < tiles.length; x += 1) {
-      movey(tiles[x], 1, rows.length * 20);
+      movey(tiles[x], offset, rows.length * 20);
     }
   }
+  lastFrame = now;
   setTimeout(render, 17);
 };
 
