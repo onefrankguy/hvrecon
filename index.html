@@ -43,6 +43,13 @@
 <script type="text/javascript">
 (function () {
   var lastTime = 0;
+  var vendor = ["ms", "mos", "webkit", "o"];
+  var i = 0;
+  while (i < vendor.length && !window.requestAnimationFrame) {
+    window.requestAnimationFrame = window[vendor[i]+"RequestAnimationFrame"];
+    window.cancelAnimationFrame = window[vendor[i]+"CancelAnimationFrame"] || window[vendor[i]+"RequestCancelAnimationFrame"];
+    i += 1;
+  }
 
   if (!window.requestAnimationFrame) {
     window.requestAnimationFrame = function (callback, element) {
@@ -122,6 +129,7 @@ var movey = function (element, delta, max) {
 };
 
 var render = function (time) {
+  requestAnimationFrame(render);
   var background = $("#background");
   var rows = background.childNodes;
   var tiles = null;
@@ -131,7 +139,6 @@ var render = function (time) {
   for (y = 0; y < rows.length; y += 1) {
     movey(rows[y], offset, canvasHeight);
   }
-  requestAnimationFrame(render);
 };
 
 setup();
