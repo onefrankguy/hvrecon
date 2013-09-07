@@ -28,6 +28,28 @@
 <div id="background">
 </div>
 <script type="text/javascript">
+(function () {
+  var lastTime = 0;
+
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function (callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var timerId = setTimeout(function () {
+        callback(currTime + timeToCall);
+      }, timeToCall);
+      lastTime = currTime + timeToCall;
+      return timerId;
+    };
+  }
+
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function (id) {
+      clearTimeout(id);
+    };
+  }
+}());
+
 var $ = function (selector) {
   if (selector.indexOf("#") === 0) {
     return document.getElementById(selector.slice(1));
@@ -37,8 +59,6 @@ var $ = function (selector) {
   }
   return null;
 };
-
-var lastFrame = new Date();
 
 var setup = function () {
   var x = 0;
@@ -75,23 +95,20 @@ var movey = function (element, delta, max) {
   element.style.top = ""+offset+"px";
 };
 
-var render = function () {
+var render = function (time) {
   var background = $("#background");
   var rows = background.childNodes;
   var tiles = null;
   var x = 0;
   var y = 0;
-  var now = new Date();
-  var delta = now - lastFrame;
-  var offset = 1 * (delta / 20);
+  var offset = 1;
   for (y = 0; y < rows.length; y += 1) {
     tiles = rows[y].childNodes;
     for (x = 0; x < tiles.length; x += 1) {
       movey(tiles[x], offset, rows.length * 20);
     }
   }
-  lastFrame = now;
-  setTimeout(render, 17);
+  requestAnimationFrame(render);
 };
 
 setup();
