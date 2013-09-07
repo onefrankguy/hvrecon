@@ -5,6 +5,10 @@
 <style type="text/css">
 #background {
   position: relative;
+  height: 320px;
+  width: 240px;
+  overflow: hidden;
+  border: 1px solid #000;
 }
 .snow {
   background-image: url(img/snow.png);
@@ -60,20 +64,29 @@ var $ = function (selector) {
   return null;
 };
 
+var canvasHeight = 160;
+var canvasWidth = 120;
+var tileHeight = 20;
+var tileWidth = 20;
+
 var setup = function () {
   var x = 0;
   var y = 0;
   var background = $("#background");
+  background.style.height = canvasHeight+"px";
+  background.style.width = canvasWidth+"px";
+  var numRows = (canvasHeight / tileHeight) + 1;
+  var numCols = canvasWidth / tileWidth;
   var row = null;
   var tile = null;
-  for (y = 0; y < 7; y += 1) {
+  for (y = 0; y < numRows; y += 1) {
     row = document.createElement("div");
     row.setAttribute("class", "row");
-    for (x = 0; x < 5; x += 1) {
+    for (x = 0; x < numCols; x += 1) {
       tile = document.createElement("span");
       tile.setAttribute("class", "snow tile");
-      tile.style.top = ""+(y * 20)+"px";
-      tile.style.left = ""+(x * 20)+"px";
+      tile.style.top = (y * tileHeight)+"px";
+      tile.style.left = (x * tileWidth)+"px";
       row.appendChild(tile);
     }
     background.appendChild(row);
@@ -89,10 +102,10 @@ var movey = function (element, delta, max) {
   }
   var offset = parseInt(element.style.top);
   if (offset > max) {
-    offset = 0;
+    offset = -tileHeight;
   }
   offset += delta;
-  element.style.top = ""+offset+"px";
+  element.style.top = offset+"px";
 };
 
 var render = function (time) {
@@ -105,7 +118,7 @@ var render = function (time) {
   for (y = 0; y < rows.length; y += 1) {
     tiles = rows[y].childNodes;
     for (x = 0; x < tiles.length; x += 1) {
-      movey(tiles[x], offset, rows.length * 20);
+      movey(tiles[x], offset, canvasHeight);
     }
   }
   requestAnimationFrame(render);
