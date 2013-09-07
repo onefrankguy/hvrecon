@@ -58,20 +58,33 @@ var setup = function () {
   }
 };
 
-var render = function () {
-  var snow = $("#snow");
-  if (snow === null) {
+var movey = function (element, delta, max) {
+  if (element === undefined) {
     return;
   }
-  if (snow.style.top === "") {
-    snow.style.top = "0px";
+  if (element.style.top === "") {
+    element.style.top = "0px";
   }
-  var offset = parseInt(snow.style.top);
-  if (offset > 320) {
+  var offset = parseInt(element.style.top);
+  if (offset > max) {
     offset = 0;
   }
-  offset += 1;
-  snow.style.top = ""+offset+"px";
+  offset += delta;
+  element.style.top = ""+offset+"px";
+};
+
+var render = function () {
+  var background = $("#background");
+  var rows = background.childNodes;
+  var tiles = null;
+  var x = 0;
+  var y = 0;
+  for (y = 0; y < rows.length; y += 1) {
+    tiles = rows[y].childNodes;
+    for (x = 0; x < tiles.length; x += 1) {
+      movey(tiles[x], 1, rows.length * 20);
+    }
+  }
   setTimeout(render, 17);
 };
 
