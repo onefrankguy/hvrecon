@@ -80,6 +80,13 @@ var $ = function (selector) {
   return null;
 };
 
+var Timer = {};
+Timer.tick = function () {
+  Timer.now = Date.now();
+  Timer.delta = (Timer.now - (Timer.then || Timer.now)) / 1000;
+  Timer.then = Timer.now;
+};
+
 var canvasHeight = 160;
 var canvasWidth = 120;
 var tileHeight = 20;
@@ -124,18 +131,17 @@ var movey = function (element, delta, max) {
     offset = -tileHeight;
     delta = 0;
   }
-  offset += delta;
+  offset += (delta + 0.5) | 0;
   element.style.top = offset+"px";
 };
 
 var render = function (time) {
+  Timer.tick();
   requestAnimationFrame(render);
   var background = $("#background");
   var rows = background.childNodes;
-  var tiles = null;
-  var x = 0;
   var y = 0;
-  var offset = 1;
+  var offset = 4 * Timer.delta;
   for (y = 0; y < rows.length; y += 1) {
     movey(rows[y], offset, canvasHeight);
   }
