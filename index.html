@@ -3,12 +3,20 @@
 <head>
 <title>Hard Vacuum: Recon</title>
 <style type="text/css">
+#viewport {
+  position: relative;
+  border: 1px solid #000;
+}
 #background {
   position: relative;
-  height: 320px;
-  width: 240px;
+  display: block;
   overflow: hidden;
-  border: 1px solid #000;
+}
+#copter {
+  display: block;
+  position: absolute;
+  bottom: 5px;
+  left: 40px;
 }
 .snow {
   background-image: url(img/snow.png);
@@ -27,7 +35,10 @@
 </style>
 </head>
 <body>
+<div id="viewport">
 <div id="background">
+</div>
+<img id="copter" src="img/copter.png"/>
 </div>
 <script type="text/javascript">
 (function () {
@@ -70,9 +81,12 @@ var tileWidth = 20;
 var setup = function () {
   var x = 0;
   var y = 0;
+  var viewport = $("#viewport");
+  viewport.style.height = canvasHeight+"px";
+  viewport.style.width = canvasWidth+"px";
   var background = $("#background");
-  background.style.height = canvasHeight+"px";
-  background.style.width = canvasWidth+"px";
+  background.style.width = viewport.style.width;
+  background.style.height = viewport.style.height;
   var numRows = (canvasHeight / tileHeight) + 1;
   var numCols = canvasWidth / tileWidth;
   var row = null;
