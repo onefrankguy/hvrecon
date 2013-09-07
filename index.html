@@ -85,7 +85,7 @@ var setup = function () {
     for (x = 0; x < numCols; x += 1) {
       tile = document.createElement("span");
       tile.setAttribute("class", "snow tile");
-      tile.style.top = (y * tileHeight)+"px";
+      tile.style.top = ((y * tileHeight) - tileHeight)+"px";
       tile.style.left = (x * tileWidth)+"px";
       row.appendChild(tile);
     }
@@ -101,8 +101,9 @@ var movey = function (element, delta, max) {
     element.style.top = "0px";
   }
   var offset = parseInt(element.style.top);
-  if (offset > max) {
+  if (offset + delta >= max) {
     offset = -tileHeight;
+    delta = 0;
   }
   offset += delta;
   element.style.top = offset+"px";
