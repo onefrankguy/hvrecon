@@ -91,6 +91,7 @@ var canvasHeight = 160;
 var canvasWidth = 120;
 var tileHeight = 20;
 var tileWidth = 20;
+var copterSpeed = 10;
 
 var setup = function () {
   var x = 0;
@@ -127,11 +128,11 @@ var movey = function (element, delta, max) {
     element.style.top = "0px";
   }
   var offset = parseInt(element.style.top);
+  delta = (delta + 0.5) | 0;
   if (offset + delta >= max) {
     offset = -tileHeight;
-    delta = 0;
   }
-  offset += (delta + 0.5) | 0;
+  offset += delta;
   element.style.top = offset+"px";
 };
 
@@ -141,7 +142,7 @@ var render = function (time) {
   var background = $("#background");
   var rows = background.childNodes;
   var y = 0;
-  var offset = 4 * Timer.delta;
+  var offset = copterSpeed * Timer.delta;
   for (y = 0; y < rows.length; y += 1) {
     movey(rows[y], offset, canvasHeight);
   }
