@@ -110,10 +110,9 @@ var $ = function (selector) {
 };
 
 var Timer = {};
-Timer.tick = function () {
-  Timer.now = Date.now();
-  Timer.delta = (Timer.now - (Timer.then || Timer.now)) / 1000;
-  Timer.then = Timer.now;
+Timer.tick = function (now) {
+  Timer.delta = (now - (Timer.then || now)) / 1000;
+  Timer.then = now;
 };
 
 var canvasHeight = 320;
@@ -229,8 +228,8 @@ var updateFPS = function () {
 };
 
 var render = function (time) {
-  Timer.tick();
   requestAnimationFrame(render);
+  Timer.tick(time);
   var rows = $("#background").childNodes;
   var y = 0;
   var offset = copterSpeed * Timer.delta;
@@ -245,7 +244,7 @@ var render = function (time) {
 };
 
 setup();
-render();
+requestAnimationFrame(render);
 </script>
 </body>
 </html>
