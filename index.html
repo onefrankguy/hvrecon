@@ -122,6 +122,8 @@ var tileWidth = 20;
 var numCols = canvasWidth / tileWidth;
 var numRows = (canvasHeight / tileHeight) + 1;
 var copterSpeed = 10;
+var icicleCount = 0;
+var maxIcicles = 12;
 
 var hasClass = function (element, klass) {
   return element.classList.contains(klass);
@@ -137,6 +139,12 @@ var isRow = function (element) {
 
 var lastIcicle = null;
 var addIcicle = function (element) {
+  if (icicleCount >= maxIcicles) {
+    return;
+  }
+  if (Math.floor(Math.random() * 3) > 1) {
+    return;
+  }
   var offsetTop = parseInt(element.style.top);
   var index = Math.floor(Math.random() * numCols);
   var icicle = document.createElement("div");
@@ -159,11 +167,13 @@ var addIcicle = function (element) {
   icicle.style.top = offsetTop+"px";
   icicle.style.left = (index * tileWidth)+"px";
   lastIcicle = $("#background").insertBefore(icicle, lastIcicle);
+  icicleCount += 1;
 };
 
 var updateIcicle = function (element) {
   if (isIcicle(element)) {
     $("#background").removeChild(element);
+    icicleCount -= 1;
     return;
   }
   if (isRow(element)) {
