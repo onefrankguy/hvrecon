@@ -96,7 +96,7 @@
 <img id="copter" src="img/copter.png"/>
 </div>
 <div id="fps"></div>
-<div id="info"></div>
+<div id="icicles"></div>
 <script type="text/javascript">
 (function () {
   var lastTime = 0;
@@ -248,7 +248,6 @@ var onIcicleTouch = function (element) {
 };
 
 var updateIcicles = function () {
-  $("#info").innerHTML = touchedIcicles.length;
   if (touchedIcicles.length != 2) {
     return;
   }
@@ -301,11 +300,13 @@ var removeIcicle = function (element) {
   var index = touchedIcicles.indexOf(element);
   if (index >= 0) {
     touchedIcicles.splice(index, 1);
-    $("#info").innerHTML = element.getAttribute("data-icicle-index");
   }
   removeTouch(element);
   $("#background").removeChild(element);
   icicleCount -= 1;
+  if (element === lastIcicle) {
+    lastIcicle = null;
+  }
 };
 
 var updateIcicle = function (element) {
@@ -369,6 +370,7 @@ var updateFPS = function () {
   if (now - lastFPS > 1000) {
     lastFPS = now;
     $("#fps").innerHTML = "FPS: "+Math.floor(1 / Timer.delta);
+    $("#icicles").innerHTML = "Icicles: "+icicleCount;
   }
 };
 
