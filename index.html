@@ -8,6 +8,7 @@
   border: 1px solid #000;
 }
 #background {
+  background-image: url(img/snow.png);
   position: relative;
   display: block;
   overflow: hidden;
@@ -134,13 +135,28 @@ var isRow = function (element) {
 
 var lastIcicle = null;
 var addIcicle = function (element) {
-  var top = parseInt(element.style.top);
+  var offsetTop = parseInt(element.style.top);
   var i = 0;
   var tiles = element.childNodes;
   var index = Math.floor(Math.random() * tiles.length);
   var icicle = document.createElement("div");
-  icicle.setAttribute("class", "icicle3");
-  icicle.style.top = (top - 40)+"px";
+  var types = [
+    "icicle1", "icicle1", "icicle1", "icicle1",
+    "icicle2", "icicle2",
+    "icicle3"
+  ];
+  var klass = types[Math.floor(Math.random() * types.length)];
+  icicle.setAttribute("class", klass);
+  if (klass === "icicle3") {
+    offsetTop -= 40;
+  }
+  if (klass === "icicle2") {
+    offsetTop -= 20;
+  }
+  if (klass === "icicle1") {
+    offsetTop -= 0;
+  }
+  icicle.style.top = offsetTop+"px";
   icicle.style.left = (index * tileWidth)+"px";
   lastIcicle = $("#background").insertBefore(icicle, lastIcicle);
 };
