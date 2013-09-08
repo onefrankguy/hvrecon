@@ -21,6 +21,33 @@
 .snow {
   background-image: url(img/snow.png);
 }
+.icicle1 {
+  background-image: url(img/icicle1.png);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+.icicle2 {
+  background-image: url(img/icicle2.png);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: 40px;
+  width: 20px;
+}
+.icicle3 {
+  background-image: url(img/icicle3.png);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: 60px;
+  width: 40px;
+}
 .row {
   display: block;
   position: absolute;
@@ -93,6 +120,40 @@ var tileHeight = 20;
 var tileWidth = 20;
 var copterSpeed = 10;
 
+var hasClass = function (element, klass) {
+  return element.classList.contains(klass);
+};
+
+var isIcicle = function (element) {
+  return hasClass(element, "icicle1");
+};
+
+var isRow = function (element) {
+  return hasClass(element, "row");
+};
+
+var addIcicle = function (element) {
+  var i = 0;
+  var tiles = element.childNodes;
+  var index = Math.floor(Math.random() * tiles.length);
+  var icicle = document.createElement("div");
+  icicle.setAttribute("class", "icicle1");
+  icicle.style.top = element.style.top;
+  icicle.style.left = (index * tileWidth)+"px";
+  $("#background").appendChild(icicle);
+};
+
+var updateIcicle = function (element) {
+  if (isIcicle(element)) {
+    $("#background").removeChild(element);
+    return;
+  }
+  if (isRow(element)) {
+    addIcicle(element);
+    return;
+  }
+};
+
 var setup = function () {
   var x = 0;
   var y = 0;
@@ -128,23 +189,29 @@ var movey = function (element, delta, max) {
     element.style.top = "0px";
   }
   var offset = parseInt(element.style.top);
+  var warp = false;
   delta = (delta + 0.5) | 0;
   if (offset + delta >= max) {
     offset = -tileHeight;
+    warp = true;
   }
   offset += delta;
   element.style.top = offset+"px";
+  return warp;
 };
 
 var render = function (time) {
   Timer.tick();
   requestAnimationFrame(render);
-  var background = $("#background");
-  var rows = background.childNodes;
+  var rows = $("#background").childNodes;
   var y = 0;
   var offset = copterSpeed * Timer.delta;
+  var warped = false;
   for (y = 0; y < rows.length; y += 1) {
-    movey(rows[y], offset, canvasHeight);
+    warped = movey(rows[y], offset, canvasHeight);
+    if (warped) {
+      updateIcicle(rows[y]);
+    }
   }
 };
 
