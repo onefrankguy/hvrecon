@@ -16,7 +16,7 @@
   display: block;
   position: absolute;
   bottom: 5px;
-  left: 40px;
+  left: 90px;
 }
 .snow {
   background-image: url(img/snow.png);
@@ -114,8 +114,8 @@ Timer.tick = function () {
   Timer.then = Timer.now;
 };
 
-var canvasHeight = 160;
-var canvasWidth = 120;
+var canvasHeight = 320;
+var canvasWidth = 240;
 var tileHeight = 20;
 var tileWidth = 20;
 var copterSpeed = 10;
@@ -125,22 +125,24 @@ var hasClass = function (element, klass) {
 };
 
 var isIcicle = function (element) {
-  return hasClass(element, "icicle1");
+  return hasClass(element, "icicle1") || hasClass(element, "icicle2") || hasClass(element, "icicle3");
 };
 
 var isRow = function (element) {
   return hasClass(element, "row");
 };
 
+var lastIcicle = null;
 var addIcicle = function (element) {
+  var top = parseInt(element.style.top);
   var i = 0;
   var tiles = element.childNodes;
   var index = Math.floor(Math.random() * tiles.length);
   var icicle = document.createElement("div");
-  icicle.setAttribute("class", "icicle1");
-  icicle.style.top = element.style.top;
+  icicle.setAttribute("class", "icicle3");
+  icicle.style.top = (top - 40)+"px";
   icicle.style.left = (index * tileWidth)+"px";
-  $("#background").appendChild(icicle);
+  lastIcicle = $("#background").insertBefore(icicle, lastIcicle);
 };
 
 var updateIcicle = function (element) {
