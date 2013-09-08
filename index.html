@@ -68,6 +68,7 @@
 </div>
 <img id="copter" src="img/copter.png"/>
 </div>
+<div id="fps"></div>
 <script type="text/javascript">
 (function () {
   var lastTime = 0;
@@ -218,6 +219,15 @@ var movey = function (element, delta, max) {
   return warp;
 };
 
+var lastFPS = 0;
+var updateFPS = function () {
+  var now = Date.now();
+  if (now - lastFPS > 1000) {
+    lastFPS = now;
+    $("#fps").innerHTML = "FPS: "+Math.floor(1 / Timer.delta);
+  }
+};
+
 var render = function (time) {
   Timer.tick();
   requestAnimationFrame(render);
@@ -231,6 +241,7 @@ var render = function (time) {
       updateIcicle(rows[y]);
     }
   }
+  updateFPS();
 };
 
 setup();
