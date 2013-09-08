@@ -119,6 +119,8 @@ var canvasHeight = 320;
 var canvasWidth = 240;
 var tileHeight = 20;
 var tileWidth = 20;
+var numCols = canvasWidth / tileWidth;
+var numRows = (canvasHeight / tileHeight) + 1;
 var copterSpeed = 10;
 
 var hasClass = function (element, klass) {
@@ -136,9 +138,7 @@ var isRow = function (element) {
 var lastIcicle = null;
 var addIcicle = function (element) {
   var offsetTop = parseInt(element.style.top);
-  var i = 0;
-  var tiles = element.childNodes;
-  var index = Math.floor(Math.random() * tiles.length);
+  var index = Math.floor(Math.random() * numCols);
   var icicle = document.createElement("div");
   var types = [
     "icicle1", "icicle1", "icicle1", "icicle1",
@@ -181,8 +181,6 @@ var setup = function () {
   var background = $("#background");
   background.style.width = viewport.style.width;
   background.style.height = viewport.style.height;
-  var numRows = (canvasHeight / tileHeight) + 1;
-  var numCols = canvasWidth / tileWidth;
   var row = null;
   var tile = null;
   for (y = 0; y < numRows; y += 1) {
