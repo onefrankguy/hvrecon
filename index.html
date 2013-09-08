@@ -211,18 +211,59 @@ var isRow = function (element) {
   return hasClass(element, "row");
 };
 
-var touchedIcicles = [];
-var onIcicleTouch = function (element) {
-  touchedIcicles.push(element);
+
+var dentToIcicle = function (element) {
   if (hasClass(element, "dent1")) {
     element.className = "icicle1";
+    return true;
   }
   if (hasClass(element, "dent2")) {
     element.className = "icicle2";
+    return true;
   }
   if (hasClass(element, "dent3")) {
     element.className = "icicle3";
+    return true;
   }
+  return false;
+};
+
+var icicleToDent = function (element) {
+  if (hasClass(element, "icicle1")) {
+    element.className = "dent1";
+  }
+  if (hasClass(element, "icicle2")) {
+    element.className = "dent2";
+  }
+  if (hasClass(element, "icicle3")) {
+    element.className = "dent3";
+  }
+};
+
+var touchedIcicles = [];
+var onIcicleTouch = function (element) {
+  if (dentToIcicle(element)) {
+    touchedIcicles.push(element);
+  }
+};
+
+var updateIcicles = function () {
+  $("#info").innerHTML = touchedIcicles.length;
+  if (touchedIcicles.length != 2) {
+    return;
+  }
+  var first = touchedIcicles[0];
+  var second = touchedIcicles[1];
+  touchedIcicles = [];
+  // If the icicles aren't the same size, flip them both face down.
+  if (first.className != second.className) {
+    icicleToDent(first);
+    icicleToDent(second);
+    return;
+  }
+  // The icicles are the same size, so remove them.
+  removeIcicle(first);
+  removeIcicle(second);
 };
 
 var lastIcicle = null;
@@ -251,7 +292,7 @@ var addIcicle = function (element) {
   icicle.style.top = offsetTop+"px";
   icicle.style.left = (index * tileWidth)+"px";
   icicle.setAttribute("data-icicle-index", icicleCount);
-  addTouch(icicle, onIcicleTouch, null);
+  addTouch(icicle, onIcicleTouch, updateIcicles);
   lastIcicle = $("#background").insertBefore(icicle, lastIcicle);
   icicleCount += 1;
 };
