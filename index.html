@@ -7,9 +7,27 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 <title>Hard Vacuum: Recon</title>
 <style type="text/css">
+* {
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+*::selection {
+  background: transparent;
+  color: transparent;
+}
+html {
+  height: 100%;
+  -webkit-text-size-adjust: none;
+}
+#wrapper {
+  width: 320px;
+  margin: 0 auto;
+}
 #viewport {
   position: relative;
-  border: 1px solid #000;
 }
 #background {
   background-image: url(img/snow.png);
@@ -21,7 +39,7 @@
   display: block;
   position: absolute;
   bottom: 5px;
-  left: 90px;
+  left: 100px;
 }
 .snow {
   background-image: url(img/snow.png);
@@ -94,6 +112,7 @@
 </style>
 </head>
 <body>
+<div id="wrapper">
 <div id="viewport">
 <div id="background">
 </div>
@@ -101,6 +120,7 @@
 </div>
 <div id="fps"></div>
 <div id="icicles"></div>
+</div>
 <script type="text/javascript">
 (function () {
   var lastTime = 0;
