@@ -69,6 +69,7 @@
 <img id="copter" src="img/copter.png"/>
 </div>
 <div id="fps"></div>
+<div id="icicle"></div>
 <script type="text/javascript">
 (function () {
   var lastTime = 0;
@@ -109,6 +110,45 @@ var $ = function (selector) {
   return null;
 };
 
+var addTouch = function (element, touchStart, touchEnd) {
+  element.onmousedown = function () {
+    if (touchStart) {
+      touchStart(element);
+    }
+    document.onmousemove = function (event) {
+      event.preventDefault();
+    };
+    document.onmouseup = function () {
+      if (touchEnd) {
+        touchEnd(element);
+      }
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  };
+  element.ontouchstart = function () {
+    element.onmousedown = null;
+    if (touchStart) {
+      touchStart(element);
+    }
+    document.ontouchmove = function (event) {
+      event.preventDefault();
+    };
+    document.ontouchend = function () {
+      if (touchEnd) {
+        touchEnd(element);
+      }
+      document.ontouchmove = null;
+      document.ontouchend = null;
+    };
+  };
+};
+
+var removeTouch = function (element) {
+  element.onmousedown = null;
+  element.ontouchstart = null;
+};
+
 var Timer = {};
 Timer.tick = function (now) {
   Timer.delta = (now - (Timer.then || now)) / 1000;
@@ -135,6 +175,16 @@ var isIcicle = function (element) {
 
 var isRow = function (element) {
   return hasClass(element, "row");
+};
+
+var onIcicleDown = function (element) {
+  var index = element.getAttribute("data-icicle-index");
+  $("#icicle").innerHTML = "touch down "+index;
+};
+
+var onIcicleUp = function (element) {
+  var index = element.getAttribute("data-icicle-index");
+  $("#icicle").innerHTML = "touch up "+index;
 };
 
 var lastIcicle = null;
@@ -166,12 +216,15 @@ var addIcicle = function (element) {
   }
   icicle.style.top = offsetTop+"px";
   icicle.style.left = (index * tileWidth)+"px";
+  icicle.setAttribute("data-icicle-index", icicleCount);
+  addTouch(icicle, onIcicleDown, onIcicleUp);
   lastIcicle = $("#background").insertBefore(icicle, lastIcicle);
   icicleCount += 1;
 };
 
 var updateIcicle = function (element) {
   if (isIcicle(element)) {
+    removeTouch(element);
     $("#background").removeChild(element);
     icicleCount -= 1;
     return;
