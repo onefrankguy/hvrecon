@@ -96,6 +96,7 @@
 <img id="copter" src="img/copter.png"/>
 </div>
 <div id="fps"></div>
+<div id="info"></div>
 <script type="text/javascript">
 (function () {
   var lastTime = 0;
@@ -196,14 +197,23 @@ var hasClass = function (element, klass) {
 };
 
 var isIcicle = function (element) {
-  return hasClass(element, "icicle1") || hasClass(element, "icicle2") || hasClass(element, "icicle3");
+  return (
+    hasClass(element, "icicle1") ||
+    hasClass(element, "icicle2") ||
+    hasClass(element, "icicle3") ||
+    hasClass(element, "dent1") ||
+    hasClass(element, "dent2") ||
+    hasClass(element, "dent3")
+  );
 };
 
 var isRow = function (element) {
   return hasClass(element, "row");
 };
 
+var touchedIcicles = [];
 var onIcicleTouch = function (element) {
+  touchedIcicles.push(element);
   if (hasClass(element, "dent1")) {
     element.className = "icicle1";
   }
@@ -246,11 +256,20 @@ var addIcicle = function (element) {
   icicleCount += 1;
 };
 
+var removeIcicle = function (element) {
+  var index = touchedIcicles.indexOf(element);
+  if (index >= 0) {
+    touchedIcicles.splice(index, 1);
+    $("#info").innerHTML = element.getAttribute("data-icicle-index");
+  }
+  removeTouch(element);
+  $("#background").removeChild(element);
+  icicleCount -= 1;
+};
+
 var updateIcicle = function (element) {
   if (isIcicle(element)) {
-    removeTouch(element);
-    $("#background").removeChild(element);
-    icicleCount -= 1;
+    removeIcicle(element);
     return;
   }
   if (isRow(element)) {
