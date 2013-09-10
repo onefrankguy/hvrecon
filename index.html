@@ -22,6 +22,11 @@ html {
   height: 100%;
   -webkit-text-size-adjust: none;
 }
+body {
+  background: #333;
+  color: #fff;
+  font-weight: bold;
+}
 #wrapper {
   width: 320px;
   margin: 0 auto;
@@ -39,7 +44,31 @@ html {
   display: block;
   position: absolute;
   bottom: 5px;
-  left: 100px;
+  left: 140px;
+}
+#upper-left {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+#upper-right {
+  display: block;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+#lower-left {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+#lower-right {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
 }
 .snow {
   background-image: url(img/snow.png);
@@ -117,6 +146,10 @@ html {
 <div id="background">
 </div>
 <img id="copter" src="img/copter.png"/>
+<img id="upper-left" src="img/interface-upper-left.png"/>
+<img id="upper-right" src="img/interface-upper-right.png"/>
+<img id="lower-left" src="img/interface-lower-left.png"/>
+<img id="lower-right" src="img/interface-lower-right.png"/>
 </div>
 <div id="fps"></div>
 <div id="icicles"></div>
@@ -227,8 +260,8 @@ Timer.tick = function (now) {
   Timer.then = now;
 };
 
-var canvasHeight = 320;
-var canvasWidth = 240;
+var canvasHeight = 480;
+var canvasWidth = 320;
 var tileHeight = 20;
 var tileWidth = 20;
 var numCols = canvasWidth / tileWidth;
