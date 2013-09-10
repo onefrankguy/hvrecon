@@ -35,7 +35,6 @@ body {
   position: relative;
 }
 #background {
-  background-image: url(img/snow.png);
   position: relative;
   display: block;
   overflow: hidden;
@@ -166,6 +165,8 @@ body {
 .row {
   display: block;
   position: absolute;
+  height: 25px;
+  width: 100%;
   top: 0;
   left: 0;
 }
@@ -440,7 +441,6 @@ var updateIcicle = function (element) {
 };
 
 var setup = function () {
-  var x = 0;
   var y = 0;
   var viewport = $("#viewport");
   viewport.style.height = canvasHeight+"px";
@@ -449,17 +449,11 @@ var setup = function () {
   background.style.width = viewport.style.width;
   background.style.height = viewport.style.height;
   var row = null;
-  var tile = null;
   for (y = 0; y < numRows; y += 1) {
     row = document.createElement("div");
-    row.setAttribute("class", "row");
+    row.setAttribute("class", "row snow");
     setTop(row, y * tileHeight);
     row.style.left = "0px";
-    for (x = 0; x < numCols; x += 1) {
-      tile = document.createElement("span");
-      tile.setAttribute("class", "snow tile");
-      row.appendChild(tile);
-    }
     background.appendChild(row);
   }
 };
@@ -468,13 +462,13 @@ var moveUp = function (element, delta) {
   if (!element || !element.style) {
     return;
   }
-  var offset = getTop(element);
+  var offset = getTop(element) + delta;
   var warp = false;
-  if (offset < 0) {
-    offset = canvasHeight + tileHeight;
+  if (offset < -tileHeight) {
+    offset = canvasHeight + delta;
     warp = true;
   }
-  setTop(element, offset + delta);
+  setTop(element, offset);
   return warp;
 };
 
