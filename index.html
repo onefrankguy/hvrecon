@@ -369,18 +369,23 @@ var updateIcicles = function () {
   if (touchedIcicles.length != 2) {
     return;
   }
+  var reactTime = 600;
   var first = touchedIcicles[0];
   var second = touchedIcicles[1];
   touchedIcicles = [];
   // If the icicles aren't the same size, flip them both face down.
   if (first.className != second.className) {
-    icicleToDent(first);
-    icicleToDent(second);
+    setTimeout(function () {
+      icicleToDent(first);
+      icicleToDent(second);
+    }, reactTime);
     return;
   }
   // The icicles are the same size, so remove them.
-  removeIcicle(first);
-  removeIcicle(second);
+  setTimeout(function () {
+    removeIcicle(first);
+    removeIcicle(second);
+  }, reactTime);
 };
 
 var lastIcicle = null;
