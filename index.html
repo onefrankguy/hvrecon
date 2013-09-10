@@ -109,25 +109,25 @@ body {
   background-image: url(img/snow.png);
 }
 .dent1 {
-  background: url(img/dent.png) 0px 0px no-repeat;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  height: 20px;
-  width: 20px;
-}
-.dent2 {
-  background: url(img/dent.png) 0px 20px no-repeat;
+  background: url(img/dent.png) 10px 10px no-repeat;
   position: absolute;
   top: 0;
   left: 0;
   display: block;
   height: 40px;
-  width: 20px;
+  width: 40px;
+}
+.dent2 {
+  background: url(img/dent.png) 10px 20px no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: 40px;
+  width: 40px;
 }
 .dent3 {
-  background: url(img/dent.png) 0px 40px no-repeat;
+  background: url(img/dent.png) 10px 20px no-repeat;
   position: absolute;
   top: 0;
   left: 0;
@@ -136,28 +136,22 @@ body {
   width: 40px;
 }
 .icicle1 {
-  background-image: url(img/icicle1.png);
+  background: url(img/icicle1.png) 10px 10px no-repeat;
   position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  height: 20px;
-  width: 20px;
-}
-.icicle2 {
-  background-image: url(img/icicle2.png);
-  position: absolute;
-  top: 0;
-  left: 0;
   display: block;
   height: 40px;
-  width: 20px;
+  width: 40px;
+}
+.icicle2 {
+  background: url(img/icicle2.png) 10px 0px no-repeat;
+  position: absolute;
+  display: block;
+  height: 40px;
+  width: 40px;
 }
 .icicle3 {
-  background-image: url(img/icicle3.png);
+  background: url(img/icicle3.png) 0px 0px no-repeat;
   position: absolute;
-  top: 0;
-  left: 0;
   display: block;
   height: 60px;
   width: 40px;
@@ -402,15 +396,6 @@ var addIcicle = function (element) {
   var types = [1, 1, 1, 1, 2, 2, 3];
   var klass = "dent" + types[Math.floor(Math.random() * types.length)];
   icicle.setAttribute("class", klass);
-  if (klass === "dent3") {
-    offsetTop -= 40;
-  }
-  if (klass === "dent2") {
-    offsetTop -= 20;
-  }
-  if (klass === "dent1") {
-    offsetTop -= 0;
-  }
   setTop(icicle, offsetTop);
   icicle.style.left = (index * tileWidth)+"px";
   icicle.setAttribute("data-icicle-index", icicleCount);
