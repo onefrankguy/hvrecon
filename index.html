@@ -109,12 +109,12 @@ body {
   background-image: url(img/snow.png);
 }
 .dent1 {
-  background: url(img/dent.png) 10px 10px no-repeat;
+  background: url(img/dent.png) 10px 20px no-repeat;
   position: absolute;
   top: 0;
   left: 0;
   display: block;
-  height: 40px;
+  height: 60px;
   width: 40px;
 }
 .dent2 {
@@ -123,7 +123,7 @@ body {
   top: 0;
   left: 0;
   display: block;
-  height: 40px;
+  height: 60px;
   width: 40px;
 }
 .dent3 {
@@ -136,17 +136,17 @@ body {
   width: 40px;
 }
 .icicle1 {
-  background: url(img/icicle1.png) 10px 10px no-repeat;
+  background: url(img/icicle1.png) 10px 20px no-repeat;
   position: absolute;
   display: block;
-  height: 40px;
+  height: 60px;
   width: 40px;
 }
 .icicle2 {
   background: url(img/icicle2.png) 10px 0px no-repeat;
   position: absolute;
   display: block;
-  height: 40px;
+  height: 60px;
   width: 40px;
 }
 .icicle3 {
@@ -250,6 +250,17 @@ var getTop = function (element) {
   return value;
 };
 
+var getLeft = function (element) {
+  var value = 0;
+  if (element) {
+    value = parseFloat(element.getAttribute("data-left"), 10);
+    if (isNaN(value) && element.style) {
+      value = parseFloat(element.style.left, 10);
+    }
+  }
+  return value;
+};
+
 var addTouch = function (element, touchStart, touchEnd) {
   element.onmousedown = function () {
     if (touchStart) {
@@ -304,6 +315,7 @@ var numRows = (canvasHeight / tileHeight) + 1;
 var copterSpeed = 10;
 var icicleCount = 0;
 var maxIcicles = 12;
+var cachedIcicles = [];
 
 var hasClass = function (element, klass) {
   return element.classList.contains(klass);
@@ -383,15 +395,54 @@ var updateIcicles = function () {
   }, reactTime);
 };
 
+var icicleCenter = function (element) {
+  var x = getLeft(element) + 20;
+  var y = getTop(element) + 20;
+  return { x: x, y: y };
+};
+
+var icicleDistance = function (element, x, y) {
+  var center = icicleCenter(element);
+  var dx = center.x - x;
+  var dy = center.y - y;
+  return Math.sqrt((dx * dx) + (dy * dy));
+};
+
+var hitsAnyIcicle = function (x, y) {
+  var max = Math.sqrt((40 * 40) + (40 * 40));
+  var i = 0;
+  for (i = 0; i < cachedIcicles.length; i += 1) {
+    var dist = icicleDistance(cachedIcicles[i], x, y);
+    if (dist <= max) {
+      return true;
+    }
+  }
+  return false;
+};
+
+var hitsEdge = function (index) {
+  return index < 2 || index >= numCols - 2;
+};
+
 var addIcicle = function (element) {
   if (icicleCount >= maxIcicles) {
     return;
   }
   var index = Math.floor(Math.random() * numCols);
-  if (index < 2 || index >= numCols - 2) {
+  if (hitsEdge(index)) {
     return;
   }
   var offsetTop = getTop(element);
+  var possible = [];
+  for (index = 0; index < numCols; index += 1) {
+    if (!hitsAnyIcicle(index * tileWidth, offsetTop) && !hitsEdge(index)) {
+      possible.push(index);
+    }
+  }
+  if (possible.length <= 0) {
+    return;
+  }
+  index = possible[Math.floor(Math.random() * possible.length)];
   var icicle = document.createElement("div");
   var types = [1, 1, 1, 1, 2, 2, 3];
   var klass = "dent" + types[Math.floor(Math.random() * types.length)];
@@ -401,6 +452,7 @@ var addIcicle = function (element) {
   icicle.setAttribute("data-icicle-index", icicleCount);
   addTouch(icicle, onIcicleTouch, updateIcicles);
   $("#background").appendChild(icicle);
+  cachedIcicles.push(icicle);
   icicleCount += 1;
 };
 
@@ -408,6 +460,10 @@ var removeIcicle = function (element) {
   var index = touchedIcicles.indexOf(element);
   if (index >= 0) {
     touchedIcicles.splice(index, 1);
+  }
+  index = cachedIcicles.indexOf(element);
+  if (index >= 0) {
+    cachedIcicles.splice(index, 1);
   }
   removeTouch(element);
   $("#background").removeChild(element);
