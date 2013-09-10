@@ -494,10 +494,8 @@ var render = function (time) {
   var rows = $("#background").childNodes;
   var y = 0;
   var offset = -copterSpeed * Timer.delta;
-  var warped = false;
   for (y = 0; y < rows.length; y += 1) {
-    warped = moveUp(rows[y], offset);
-    if (warped) {
+    if (moveUp(rows[y], offset)) {
       updateIcicle(rows[y]);
     }
   }
