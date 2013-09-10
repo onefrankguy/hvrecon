@@ -43,8 +43,26 @@ body {
 #copter {
   display: block;
   position: absolute;
-  bottom: 5px;
+  bottom: 15px;
   left: 140px;
+}
+#interface-left {
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 13px;
+  top: 0px;
+  left: 0px;
+  background: url(img/interface-left.png);
+}
+#interface-bottom {
+  display: block;
+  position: absolute;
+  height: 10px;
+  width: 320px;
+  bottom: 0px;
+  left: 0px;
+  background: url(img/interface-bottom.png);
 }
 #upper-left {
   display: block;
@@ -146,6 +164,8 @@ body {
 <div id="background">
 </div>
 <img id="copter" src="img/copter.png"/>
+<div id="interface-left"></div>
+<div id="interface-bottom"></div>
 <img id="upper-left" src="img/interface-upper-left.png"/>
 <img id="upper-right" src="img/interface-upper-right.png"/>
 <img id="lower-left" src="img/interface-lower-left.png"/>
