@@ -388,11 +388,11 @@ var addIcicle = function (element) {
   if (icicleCount >= maxIcicles) {
     return;
   }
-  if (Math.floor(Math.random() * 3) > 1) {
+  var index = Math.floor(Math.random() * numCols);
+  if (index < 2 || index >= numCols - 2) {
     return;
   }
   var offsetTop = getTop(element);
-  var index = Math.floor(Math.random() * numCols);
   var icicle = document.createElement("div");
   var types = [1, 1, 1, 1, 2, 2, 3];
   var klass = "dent" + types[Math.floor(Math.random() * types.length)];
