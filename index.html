@@ -388,7 +388,6 @@ var updateIcicles = function () {
   }, reactTime);
 };
 
-var lastIcicle = null;
 var addIcicle = function (element) {
   if (icicleCount >= maxIcicles) {
     return;
@@ -415,7 +414,7 @@ var addIcicle = function (element) {
   icicle.style.left = (index * tileWidth)+"px";
   icicle.setAttribute("data-icicle-index", icicleCount);
   addTouch(icicle, onIcicleTouch, updateIcicles);
-  lastIcicle = $("#background").insertBefore(icicle, lastIcicle);
+  $("#background").appendChild(icicle);
   icicleCount += 1;
 };
 
@@ -427,9 +426,6 @@ var removeIcicle = function (element) {
   removeTouch(element);
   $("#background").removeChild(element);
   icicleCount -= 1;
-  if (element === lastIcicle) {
-    lastIcicle = null;
-  }
 };
 
 var updateIcicle = function (element) {
@@ -457,7 +453,7 @@ var setup = function () {
   for (y = 0; y < numRows; y += 1) {
     row = document.createElement("div");
     row.setAttribute("class", "row");
-    setTop(row, (y * tileHeight) - tileHeight);
+    setTop(row, y * tileHeight);
     row.style.left = "0px";
     for (x = 0; x < numCols; x += 1) {
       tile = document.createElement("span");
@@ -468,17 +464,17 @@ var setup = function () {
   }
 };
 
-var movey = function (element, delta, max) {
+var moveUp = function (element, delta) {
   if (!element || !element.style) {
     return;
   }
-  var offset = getTop(element) + delta;
+  var offset = getTop(element);
   var warp = false;
-  if (offset >= max) {
-    offset = -tileHeight + delta;
+  if (offset < 0) {
+    offset = canvasHeight + tileHeight;
     warp = true;
   }
-  setTop(element, offset);
+  setTop(element, offset + delta);
   return warp;
 };
 
@@ -497,10 +493,10 @@ var render = function (time) {
   Timer.tick(time);
   var rows = $("#background").childNodes;
   var y = 0;
-  var offset = copterSpeed * Timer.delta;
+  var offset = -copterSpeed * Timer.delta;
   var warped = false;
   for (y = 0; y < rows.length; y += 1) {
-    warped = movey(rows[y], offset, canvasHeight);
+    warped = moveUp(rows[y], offset);
     if (warped) {
       updateIcicle(rows[y]);
     }
