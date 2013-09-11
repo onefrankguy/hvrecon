@@ -173,6 +173,98 @@ body {
   height: 20px;
   width: 20px;
 }
+.bar {
+  position: relative;
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: #424542;
+  border-top:    1px solid #525552;
+  border-bottom: 1px solid #000400;
+  box-shadow: 1px 1px 3px #101410;
+}
+.button {
+  position: absolute;
+  top: -2px;
+  margin-right: 5px;
+  display: inline-block;
+  height: 5px;
+  width: 6px;
+  border-top:    1px solid #636563;
+  border-right:  1px solid #525552;
+  border-bottom: 1px solid #000400;
+  border-left:   1px solid #848684;
+  box-shadow: 1px 1px 3px #101410;
+}
+.lght0 {
+  left: 0%;
+}
+.lght2 {
+  left: 14.29%;
+}
+.lght3 {
+  left: 28.57%;
+}
+.lght4 {
+  left: 42.86%;
+}
+.lght5 {
+  left: 57.14%;
+}
+.lght6 {
+  left: 71.43%;
+}
+.lght7 {
+  left: 85.71%;
+}
+.lght8 {
+  left: 98%;
+}
+.lvl0 {
+  background: #310000;
+  box-shadow: inset 0 0 0 1px #210000,
+              1px 1px 3px #101410;
+}
+.lvl1 {
+  background: #420000;
+  box-shadow: inset 0 0 0 1px #310000,
+              1px 1px 3px #101410;
+}
+.lvl2 {
+  background: #630000;
+  box-shadow: inset 0 0 0 1px #420000,
+              1px 1px 3px #101410;
+}
+.lvl3 {
+  background: #731000;
+  box-shadow: inset 0 0 0 1px #630000,
+              1px 1px 3px #101410;
+}
+.lvl4 {
+  background: #841000;
+  box-shadow: inset 0 0 0 1px #731000,
+              1px 1px 3px #101410;
+}
+.lvl5 {
+  background: #942000;
+  box-shadow: inset 0 0 0 1px #841000,
+              1px 1px 3px #101410;
+}
+.lvl6 {
+  background: #a52000;
+  box-shadow: inset 0 0 0 1px #942000,
+              1px 1px 3px #101410;
+}
+.lvl7 {
+  background: #d63000;
+  box-shadow: inset 0 0 0 1px #b53000,
+              1px 1px 3px #101410;
+}
+.lvl8 {
+  background: #f75100;
+  box-shadow: inset 0 0 0 1px #d63000,
+              1px 1px 3px #101410;
+}
 </style>
 </head>
 <body>
@@ -192,6 +284,17 @@ body {
 </div>
 <div id="fps"></div>
 <div id="icicles"></div>
+<div id="power" class="bar">
+  <span class="button lght0 lvl0"></span>
+  <span class="button lght1 lvl1"></span>
+  <span class="button lght2 lvl2"></span>
+  <span class="button lght3 lvl3"></span>
+  <span class="button lght4 lvl4"></span>
+  <span class="button lght5 lvl5"></span>
+  <span class="button lght6 lvl6"></span>
+  <span class="button lght7 lvl7"></span>
+  <span class="button lght8 lvl8"></span>
+</div>
 </div>
 <script type="text/javascript">
 (function () {
@@ -535,7 +638,7 @@ var render = function (time) {
 };
 
 setup();
-requestAnimationFrame(render);
+// requestAnimationFrame(render);
 </script>
 </body>
 </html>
