@@ -284,20 +284,23 @@ body {
 <img id="lower-left" src="img/interface-lower-left.png"/>
 <img id="lower-right" src="img/interface-lower-right.png"/>
 </div>
-<div id="fps"></div>
-<div id="icicles"></div>
-<div id="power" class="bar">
-  <span class="button lght0 lvl0"></span>
-  <span class="button lght1 lvl1"></span>
-  <span class="button lght2 lvl2"></span>
-  <span class="button lght3 lvl3"></span>
-  <span class="button lght4 lvl4"></span>
-  <span class="button lght5 lvl5"></span>
-  <span class="button lght6 lvl6"></span>
-  <span class="button lght7 lvl7"></span>
-  <span class="button lght8 lvl8"></span>
+<div id="cargo-hold" class="bar">
+  <span id="bay0" class="button lght0 lvl0"></span>
+  <span id="bay1" class="button lght1 lvl0"></span>
+  <span id="bay2" class="button lght2 lvl0"></span>
+  <span id="bay3" class="button lght3 lvl0"></span>
+  <span id="bay4" class="button lght4 lvl0"></span>
+  <span id="bay5" class="button lght5 lvl0"></span>
+  <span id="bay6" class="button lght6 lvl0"></span>
+  <span id="bay7" class="button lght7 lvl0"></span>
+  <span id="bay8" class="button lght8 lvl0"></span>
 </div>
 <p class="credits">Design <abbr title="and">&amp;</abbr> dev by <a href="http://frankmitchell.org/">Frank Mitchell</a> for <a href="http://js13kgames.com/">js13kGames</a><br />&ldquo;<a href="http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html">Hard Vacuum</a>&rdquo; art by Daniel Cook (<a href="http://lostgarden.com/">lostgarden.com</a>)</p>
+<div id="fps"></div>
+<div id="icicles"></div>
+<div id="cargo"></div>
+<div id="units"></div>
+<div id="power"></div>
 </div>
 <script type="text/javascript">
 (function () {
@@ -641,6 +644,28 @@ var updateFPS = function () {
   }
 };
 
+var lastCargo = 0;
+var updateCargo = function () {
+  var now = Date.now();
+  if (now - lastCargo < 333) {
+    return;
+  }
+  lastCargo = now;
+  var i = 0;
+  var power = Math.floor((usedCargo  / maxCargo) * 81);
+  var units = Math.floor(power / 9);
+  power = power - (units * 9);
+  $("#cargo").innerHTML = "Cargo: "+usedCargo;
+  $("#power").innerHTML = "Power: "+power;
+  $("#units").innerHTML = "Units: "+units;
+  for (i = 0; i < units; i += 1) {
+    $("#bay"+i).className = "button lght"+i+" lvl8";
+  }
+  if (i < 9) {
+    $("#bay"+i).className = "button lght"+i+" lvl"+power;
+  }
+};
+
 var render = function (time) {
   if (!isGameOver()) {
     requestAnimationFrame(render);
@@ -655,6 +680,7 @@ var render = function (time) {
     }
   }
   updateFPS();
+  updateCargo();
 };
 
 setup();
