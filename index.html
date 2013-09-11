@@ -262,42 +262,37 @@ var getLeft = function (element) {
 };
 
 var addTouch = function (element, touchStart, touchEnd) {
-  element.onmousedown = function () {
+  element.onmousedown = function (event) {
     if (touchStart) {
-      touchStart(element);
+      touchStart(event);
     }
     document.onmousemove = function (event) {
       event.preventDefault();
     };
-    document.onmouseup = function () {
+    document.onmouseup = function (event) {
       if (touchEnd) {
-        touchEnd(element);
+        touchEnd(event);
       }
       document.onmousemove = null;
       document.onmouseup = null;
     };
   };
-  element.ontouchstart = function () {
+  element.ontouchstart = function (event) {
     element.onmousedown = null;
     if (touchStart) {
-      touchStart(element);
+      touchStart(event);
     }
     document.ontouchmove = function (event) {
       event.preventDefault();
     };
-    document.ontouchend = function () {
+    document.ontouchend = function (event) {
       if (touchEnd) {
-        touchEnd(element);
+        touchEnd(event);
       }
       document.ontouchmove = null;
       document.ontouchend = null;
     };
   };
-};
-
-var removeTouch = function (element) {
-  element.onmousedown = null;
-  element.ontouchstart = null;
 };
 
 var Timer = {};
@@ -366,14 +361,17 @@ var icicleToDent = function (element) {
 };
 
 var touchedIcicles = [];
-var onIcicleTouch = function (element) {
-  if (dentToIcicle(element)) {
-    touchedIcicles.push(element);
+var onBoardTouch = function (event) {
+  var target = event.srcElement || event.target;
+  if (isIcicle(target)) {
+    if (dentToIcicle(target)) {
+      touchedIcicles.push(target);
+    }
   }
 };
 
 var updateIcicles = function () {
-  if (touchedIcicles.length != 2) {
+  if (touchedIcicles.length < 2) {
     return;
   }
   var reactTime = 600;
@@ -450,7 +448,6 @@ var addIcicle = function (element) {
   setTop(icicle, offsetTop);
   icicle.style.left = (index * tileWidth)+"px";
   icicle.setAttribute("data-icicle-index", icicleCount);
-  addTouch(icicle, onIcicleTouch, updateIcicles);
   $("#background").appendChild(icicle);
   cachedIcicles.push(icicle);
   icicleCount += 1;
@@ -465,7 +462,6 @@ var removeIcicle = function (element) {
   if (index >= 0) {
     cachedIcicles.splice(index, 1);
   }
-  removeTouch(element);
   $("#background").removeChild(element);
   icicleCount -= 1;
 };
@@ -497,6 +493,7 @@ var setup = function () {
     row.style.left = "0px";
     background.appendChild(row);
   }
+  addTouch(background, onBoardTouch, updateIcicles);
 };
 
 var moveUp = function (element, delta) {
