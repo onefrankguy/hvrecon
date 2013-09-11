@@ -46,7 +46,7 @@ a {
 #copter {
   display: block;
   position: absolute;
-  top: 10px;
+  top: 20px;
   left: 140px;
 }
 #interface-left {
@@ -669,8 +669,8 @@ var updateCargo = function () {
   }
   lastCargo = now;
   var i = 0;
-  var power = Math.floor((usedCargo  / maxCargo) * 81);
-  var units = Math.floor(power / 9);
+  var power = Math.ceil((usedCargo  / maxCargo) * 81);
+  var units = Math.ceil(power / 9);
   power = power - (units * 9);
   $("#cargo").innerHTML = "Cargo: "+usedCargo;
   $("#power").innerHTML = "Power: "+power;
