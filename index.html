@@ -109,6 +109,14 @@ body {
   right: 0px;
   pointer-events: none;
 }
+#cargo-hold {
+  display: block;
+  width: 290px;
+  position: absolute;
+  top: 8px;
+  left: 11px;
+  pointer-events: none;
+}
 .snow {
   background-image: url(img/snow.png);
 }
@@ -174,10 +182,8 @@ body {
   width: 20px;
 }
 .bar {
-  position: relative;
   display: block;
   height: 3px;
-  width: 312px;
   background: #424542;
   border-top:    1px solid #525552;
   border-bottom: 1px solid #000400;
@@ -283,7 +289,6 @@ body {
 <img id="upper-right" src="img/interface-upper-right.png"/>
 <img id="lower-left" src="img/interface-lower-left.png"/>
 <img id="lower-right" src="img/interface-lower-right.png"/>
-</div>
 <div id="cargo-hold" class="bar">
   <span id="bay0" class="button lght0 lvl0"></span>
   <span id="bay1" class="button lght1 lvl0"></span>
@@ -294,6 +299,7 @@ body {
   <span id="bay6" class="button lght6 lvl0"></span>
   <span id="bay7" class="button lght7 lvl0"></span>
   <span id="bay8" class="button lght8 lvl0"></span>
+</div>
 </div>
 <p class="credits">Design <abbr title="and">&amp;</abbr> dev by <a href="http://frankmitchell.org/">Frank Mitchell</a> for <a href="http://js13kgames.com/">js13kGames</a><br />&ldquo;<a href="http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html">Hard Vacuum</a>&rdquo; art by Daniel Cook (<a href="http://lostgarden.com/">lostgarden.com</a>)</p>
 <div id="fps"></div>
