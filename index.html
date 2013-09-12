@@ -174,7 +174,7 @@ p {
 }
 #odometer {
   position: absolute;
-  right: 20px;
+  right: 19px;
   bottom: 0.5rem;
   display: block;
   height: 15px;
@@ -479,6 +479,7 @@ var numRows = (canvasHeight / tileHeight) + 1;
 var copterSpeed = 20;
 var maxIcicles = numRows;
 var cachedIcicles = [];
+var fuelCost = 0.675;
 var maxPower = 81;
 var availablePower = maxPower;
 var copterDistance = 0;
@@ -564,7 +565,7 @@ var icicleSize = function (element) {
 };
 
 var icicleValue = function (element) {
-  return icicleSize(element);
+  return 2 * fuelCost * icicleSize(element);
 };
 
 var updateIcicles = function () {
@@ -759,7 +760,7 @@ var lastFuelUpdate = 0;
 var updateFuel = function () {
   var now = Date.now();
   if (now - lastFuelUpdate > 1000) {
-    powerDown(0.675);
+    powerDown(fuelCost);
     lastFuelUpdate = now;
   }
 };
