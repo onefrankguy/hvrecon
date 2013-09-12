@@ -503,6 +503,19 @@ var onBoardTouch = function (event) {
   }
 };
 
+var icicleValue = function (element) {
+  if (hasClass(element, "icicle1")) {
+    return 1;
+  }
+  if (hasClass(element, "icicle2")) {
+    return 2;
+  }
+  if (hasClass(element, "icicle3")) {
+    return 3;
+  }
+  return 0;
+};
+
 var updateIcicles = function () {
   if (touchedIcicles.length < 2) {
     return;
@@ -520,7 +533,7 @@ var updateIcicles = function () {
     return;
   }
   // The icicles are the same size, so remove them.
-  powerUp(2);
+  powerUp(icicleValue(first));
   setTimeout(function () {
     removeIcicle(first);
     removeIcicle(second);
@@ -676,6 +689,15 @@ var updatePower = function () {
   }
 };
 
+var lastFuelUpdate = 0;
+var updateFuel = function () {
+  var now = Date.now();
+  if (now - lastFuelUpdate > 8000) {
+    powerDown(1);
+    lastFuelUpdate = now;
+  }
+};
+
 var render = function (time) {
   if (!isGameOver()) {
     requestAnimationFrame(render);
@@ -690,6 +712,7 @@ var render = function (time) {
     }
   }
   updateFPS();
+  updateFuel();
   updatePower();
 };
 
