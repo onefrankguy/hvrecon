@@ -60,16 +60,20 @@ p {
 }
 .dialog {
   position: absolute;
-  top: 100%;
+  top: 50%;
   left: 0;
   display: block;
-  height: 50%;
+  height: 100%;
   width: 280px;
   background: #424542;
   color: #fff;
   padding: 10px 20px;
   -moz-hyphens: auto;
   hyphens: auto;
+  -webkit-transition: top 1.5s ease-in-out;
+     -moz-transition: top 1.5s ease-in-out;
+       -o-transition: top 1.5s ease-in-out;
+          transition: top 1.5s ease-in-out;
 }
 .dialog:before {
   content: "";
@@ -94,10 +98,7 @@ p {
   top: 50%;
 }
 .dismiss {
-  -webkit-animation: dismiss 1.5s linear normal;
-     -moz-animation: dismiss 1.5s linear normal;
-       -o-animation: dismiss 1.5s linear normal;
-          animation: dismiss 1.5s linear normal;
+  top: 100%;
 }
 #interface-left {
   display: block;
@@ -313,22 +314,6 @@ p {
   box-shadow: inset 0 0 0 1px #d63000,
               1px 1px 3px #101410;
 }
-@keyframes dismiss {
-  from { top: 50%; }
-  to   { top: 100%; }
-}
-@-webkit-keyframes dismiss {
-  from { top: 50%; }
-  to   { top: 100%; }
-}
-@-moz-keyframes dismiss {
-  from { top: 50%; }
-  to   { top: 100%; }
-}
-@-o-keyframes dismiss {
-  from { top: 50%; }
-  to   { top: 100%; }
-}
 </style>
 </head>
 <body>
@@ -496,6 +481,7 @@ var maxIcicles = numRows;
 var cachedIcicles = [];
 var maxPower = 81;
 var availablePower = maxPower;
+var copterDistance = 0;
 
 var powerUp = function (value) {
   availablePower += value;
@@ -702,6 +688,8 @@ var reset = function () {
   for (i = 0; i < cachedIcicles.length; i += 1) {
     icicleToRock(cachedIcicles[i]);
   }
+  $("#mission").className = "dialog active";
+  availablePower = maxPower;
 };
 
 var moveUp = function (element, delta) {
@@ -761,7 +749,6 @@ var updateFuel = function () {
   }
 };
 
-var copterDistance = 0;
 var lastOdometerUpdate = 0;
 var updateOdometer = function () {
   var now = Date.now();
