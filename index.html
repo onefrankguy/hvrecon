@@ -665,8 +665,8 @@ var updatePower = function () {
 var lastFuelUpdate = 0;
 var updateFuel = function () {
   var now = Date.now();
-  if (now - lastFuelUpdate > 8000) {
-    powerDown(1);
+  if (now - lastFuelUpdate > 1000) {
+    powerDown(0.675);
     lastFuelUpdate = now;
   }
 };
