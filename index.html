@@ -542,6 +542,10 @@ var onBoardTouch = function (event) {
   }
 };
 
+var randomValue = function (array) {
+  return array[Math.floor(Math.random() * array.length)];
+};
+
 var icicleSize = function (element) {
   if (!element.hasAttribute("data-icicle-size")) {
     var offset = getTop(element);
@@ -553,7 +557,7 @@ var icicleSize = function (element) {
     if (offset <= zone * 1) {
         types = [1, 2, 2, 3, 3, 3, 3];
     }
-    var size = types[Math.floor(Math.random() * types.length)];
+    var size = randomValue(types);
     element.setAttribute("data-icicle-size", size);
   }
   return parseInt(element.getAttribute("data-icicle-size"), 10);
@@ -633,7 +637,7 @@ var addIcicle = function (element) {
   if (possible.length <= 0) {
     return;
   }
-  index = possible[Math.floor(Math.random() * possible.length)];
+  index = randomValue(possible);
   var icicle = document.createElement("div");
   icicle.setAttribute("class", "rock");
   setTop(icicle, canvasHeight);
@@ -683,13 +687,24 @@ var setup = function () {
   addTouch(viewport, onBoardTouch, updateIcicles);
 };
 
-var reset = function () {
+var nextMission = function () {
+  var text = "<p>"+randomValue(["Nice flying.","Not bad.","Don't get cocky."])+"</p>";
+  text += "<p>You made it "+Math.floor(copterDistance)+" meters on those fuel cells. ";
+  text += "I can probably dig up some more if you want to go again.</p>";
+  text += "<p>You game?</p>";
+  return text;
+};
+
+var resetMission = function () {
   var i = 0;
+  var mission = $("#mission");
   for (i = 0; i < cachedIcicles.length; i += 1) {
     icicleToRock(cachedIcicles[i]);
   }
-  $("#mission").className = "dialog active";
+  mission.innerHTML = nextMission();
+  mission.className = "dialog active";
   availablePower = maxPower;
+  copterDistance = 0;
 };
 
 var moveUp = function (element, delta) {
@@ -763,7 +778,7 @@ var render = function (time) {
     requestAnimationFrame(render);
   }
   else {
-    reset();
+    resetMission();
   }
   Timer.tick(time);
   var rows = $("#background").childNodes;
