@@ -496,7 +496,7 @@ var touchedIcicles = [];
 var onBoardTouch = function (event) {
   var target = event.srcElement || event.target;
   if (isIcicle(target)) {
-    if (dentToIcicle(target)) {
+    if (!isGameOver() && dentToIcicle(target)) {
       touchedIcicles.push(target);
       powerDown(1);
     }
