@@ -338,10 +338,6 @@ Well you'll figure it out.</p>
   <p>&ldquo;<a href="http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html">Hard Vacuum</a>&rdquo; art by Daniel Cook (<a href="http://lostgarden.com/">lostgarden.com</a>)</p>
 </div>
 <div id="fps"></div>
-<div id="time"></div>
-<div id="icicles"></div>
-<div id="units"></div>
-<div id="power"></div>
 </div>
 <script type="text/javascript">
 (function () {
@@ -694,8 +690,6 @@ var updateStats = function () {
   if (now - lastStatsUpdate > 1000) {
     lastStatsUpdate = now;
     $("#fps").innerHTML = "FPS: "+Math.floor(1 / Timer.delta);
-    $("#time").innerHTML = "Time: "+Math.ceil((now - startTime) / 1000);
-    $("#icicles").innerHTML = "Icicles: "+cachedIcicles.length;
   }
 };
 
@@ -710,8 +704,6 @@ var updatePower = function () {
   var power = Math.floor((availablePower / maxPower) * 81);
   var units = Math.floor(power / 9);
   power = power - (units * 9);
-  $("#power").innerHTML = "Power: "+power;
-  $("#units").innerHTML = "Units: "+units;
   for (i = 0; i < units && i < 9; i += 1) {
     $("#battery"+i).className = "button lght"+(8 - i)+" lvl8";
   }
