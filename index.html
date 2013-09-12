@@ -43,6 +43,10 @@ a {
   display: block;
   overflow: hidden;
 }
+#terrain {
+  position: absolute;
+  background: url(img/snow.png);
+}
 #copter {
   display: block;
   position: absolute;
@@ -176,19 +180,6 @@ a {
   height: 60px;
   width: 40px;
 }
-.row {
-  display: block;
-  position: absolute;
-  height: 25px;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-.tile {
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-}
 .bar {
   display: block;
   height: 3px;
@@ -281,34 +272,13 @@ a {
   box-shadow: inset 0 0 0 1px #d63000,
               1px 1px 3px #101410;
 }
-.scroll-up {
-  -webkit-animation: scroll-up 1s linear infinite;
-     -moz-animation: scroll-up 1s linear infinite;
-       -o-animation: scroll-up 1s linear infinite;
-          animation: scroll-up 1s linear infinite;
-}
-@keyframes scroll-up {
-  from { transform: translate3d(0, 0px, 0); }
-  to   { transform: translate3d(0, -20px, 0); }
-}
-@-webkit-keyframes scroll-up {
-  from { -webkit-transform: translate3d(0, 0px, 0); }
-  to   { -webkit-transform: translate3d(0, -20px, 0); }
-}
-@-moz-keyframes scroll-up {
-  from { -moz-transform: translate3d(0, 0px, 0); }
-  to   { -moz-transform: translate3d(0, -20px, 0); }
-}
-@-o-keyframes scroll-up {
-  from { -o-transform: translate3d(0, 0px, 0); }
-  to   { -o-transform: translate3d(0, -20px, 0); }
-}
 </style>
 </head>
 <body>
 <div id="wrapper">
 <div id="viewport">
 <div id="background">
+  <div id="terrain" class="terrain"></div>
 </div>
 <img id="copter" src="img/copter.png"/>
 <div id="interface-left"></div>
@@ -480,10 +450,9 @@ var isIcicle = function (element) {
   );
 };
 
-var isRow = function (element) {
-  return hasClass(element, "row");
+var isTerrain = function (element) {
+  return hasClass(element, "terrain");
 };
-
 
 var dentToIcicle = function (element) {
   if (hasClass(element, "dent1")) {
@@ -592,7 +561,7 @@ var addIcicle = function (element) {
   if (hitsEdge(index)) {
     return;
   }
-  var offsetTop = getTop(element);
+  var offsetTop = canvasHeight;
   var possible = [];
   for (index = 0; index < numCols; index += 1) {
     if (!hitsAnyIcicle(index * tileWidth, offsetTop) && !hitsEdge(index)) {
@@ -630,7 +599,7 @@ var updateIcicle = function (element) {
     removeIcicle(element);
     return;
   }
-  if (isRow(element)) {
+  if (isTerrain(element)) {
     addIcicle(element);
     return;
   }
@@ -648,14 +617,9 @@ var setup = function () {
   var background = $("#background");
   background.style.width = viewport.style.width;
   background.style.height = viewport.style.height;
-  var row = null;
-  for (y = 0; y < numRows; y += 1) {
-    row = document.createElement("div");
-    row.setAttribute("class", "row snow scroll-up");
-    setTop(row, y * tileHeight);
-    row.style.left = "0px";
-    background.appendChild(row);
-  }
+  var terrain = $("#terrain");
+  terrain.style.width = viewport.style.width;
+  terrain.style.height = (numRows * tileHeight)+"px";
   addTouch(background, onBoardTouch, updateIcicles);
 };
 
@@ -666,7 +630,12 @@ var moveUp = function (element, delta) {
   var offset = getTop(element) + delta;
   var warp = false;
   if (offset < -tileHeight) {
-    offset = canvasHeight + delta;
+    if (isIcicle(element)) {
+      offset = canvasHeight + delta;
+    }
+    if (isTerrain(element)) {
+      offset = delta;
+    }
     warp = true;
   }
   setTop(element, offset);
