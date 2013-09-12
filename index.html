@@ -469,6 +469,9 @@ Timer.tick = function (now) {
   Timer.delta = (now - (Timer.then || now)) / 1000;
   Timer.then = now;
 };
+Timer.reset = function () {
+  Timer.then = null;
+};
 
 var canvasHeight = 440;
 var canvasWidth = 320;
@@ -706,6 +709,7 @@ var resetMission = function () {
   mission.className = "dialog active";
   availablePower = maxPower;
   copterDistance = 0;
+  Timer.reset();
 };
 
 var moveUp = function (element, delta) {
