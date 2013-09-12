@@ -90,10 +90,9 @@ a {
 }
 .dismiss {
   -webkit-animation: dismiss 1.5s linear normal;
-}
-@-webkit-keyframes dismiss {
-  from { top: 50%; }
-  to   { top: 100%; }
+     -moz-animation: dismiss 1.5s linear normal;
+       -o-animation: dismiss 1.5s linear normal;
+          animation: dismiss 1.5s linear normal;
 }
 #interface-left {
   display: block;
@@ -295,6 +294,22 @@ a {
   background: #f75100;
   box-shadow: inset 0 0 0 1px #d63000,
               1px 1px 3px #101410;
+}
+@keyframes dismiss {
+  from { top: 50%; }
+  to   { top: 100%; }
+}
+@-webkit-keyframes dismiss {
+  from { top: 50%; }
+  to   { top: 100%; }
+}
+@-moz-keyframes dismiss {
+  from { top: 50%; }
+  to   { top: 100%; }
+}
+@-o-keyframes dismiss {
+  from { top: 50%; }
+  to   { top: 100%; }
 }
 </style>
 </head>
