@@ -20,16 +20,21 @@
 }
 html {
   height: 100%;
+  font-size: 62.5%;
+  font-family: Helvetica, sans-serif;
   -webkit-text-size-adjust: none;
 }
 body {
   background: #313431;
   color: #fff;
-  font: 12px/15px Helvetica, sans-serif;
 }
 a {
   color: #fff;
   text-decoration: none;
+}
+p {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
 }
 #wrapper {
   width: 320px;
@@ -60,7 +65,7 @@ a {
   display: block;
   height: 50%;
   width: 280px;
-  background: #313431;
+  background: #424542;
   color: #fff;
   padding: 10px 20px;
   -moz-hyphens: auto;
@@ -166,8 +171,21 @@ a {
   left: 11px;
   pointer-events: none;
 }
+#odometer {
+  position: absolute;
+  right: 19px;
+  bottom: 0.8rem;
+  display: block;
+  height: 12px;
+  width: 24px;
+  overflow: hidden;
+  text-align: right;
+  color: #8492a5;
+  font-family: monospace;
+  text-shadow: 1px 1px 0px #000400;
+}
 .credits {
-  margin-top: 15px;
+  margin-top: 1.5rem;
   text-align: right;
 }
 .snow {
@@ -347,12 +365,13 @@ Well you'll figure it out.</p>
   <span id="battery7" class="button lght7 lvl8"></span>
   <span id="battery8" class="button lght8 lvl8"></span>
 </div>
+<p id="odometer"></p>
 </div>
 <div class="credits">
   <p>Design <abbr title="and">&amp;</abbr> dev by <a href="http://frankmitchell.org/">Frank Mitchell</a> for <a href="http://js13kgames.com/">js13kGames</a></p>
   <p>&ldquo;<a href="http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html">Hard Vacuum</a>&rdquo; art by Daniel Cook (<a href="http://lostgarden.com/">lostgarden.com</a>)</p>
 </div>
-<div id="fps"></div>
+<p id="fps"></p>
 </div>
 <script type="text/javascript">
 (function () {
@@ -742,6 +761,16 @@ var updateFuel = function () {
   }
 };
 
+var copterDistance = 0;
+var lastOdometerUpdate = 0;
+var updateOdometer = function () {
+  var now = Date.now();
+  if (now - lastOdometerUpdate > 333) {
+    $("#odometer").innerHTML = Math.floor(copterDistance);
+    lastOdometerUpdate = now;
+  };
+};
+
 var render = function (time) {
   if (running()) {
     requestAnimationFrame(render);
@@ -753,6 +782,10 @@ var render = function (time) {
   var rows = $("#background").childNodes;
   var y = 0;
   var offset = -copterSpeed * Timer.delta;
+  copterDistance += -offset;
+  if (copterDistance >= 10000) {
+    copterDistance = 0;
+  }
   for (y = 0; y < rows.length; y += 1) {
     if (moveUp(rows[y], offset)) {
       updateIcicle(rows[y]);
@@ -761,6 +794,7 @@ var render = function (time) {
   updateStats();
   updateFuel();
   updatePower();
+  updateOdometer();
 };
 
 setup();
