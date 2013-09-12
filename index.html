@@ -639,6 +639,13 @@ var setup = function () {
   addTouch(background, onBoardTouch, updateIcicles);
 };
 
+var reset = function () {
+  var i = 0;
+  for (i = 0; i < cachedIcicles.length; i += 1) {
+    icicleToDent(cachedIcicles[i]);
+  }
+};
+
 var moveUp = function (element, delta) {
   if (!element || !element.style) {
     return;
@@ -701,6 +708,9 @@ var updateFuel = function () {
 var render = function (time) {
   if (!isGameOver()) {
     requestAnimationFrame(render);
+  }
+  else {
+    reset();
   }
   Timer.tick(time);
   var rows = $("#background").childNodes;
