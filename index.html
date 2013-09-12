@@ -523,10 +523,20 @@ var onBoardTouch = function (event) {
 };
 
 var icicleSize = function (element) {
-  if (element.hasAttribute("data-icicle-size")) {
-    return parseInt(element.getAttribute("data-icicle-size"), 10);
+  if (!element.hasAttribute("data-icicle-size")) {
+    var offset = getTop(element);
+    var zone = Math.ceil(canvasHeight / 3);
+    var types = [1, 1, 1, 1, 2, 2, 3];
+    if (offset <= zone * 2) {
+        types = [1, 1, 2, 2, 2, 2, 3];
+    }
+    if (offset <= zone * 1) {
+        types = [1, 2, 2, 3, 3, 3, 3];
+    }
+    var size = types[Math.floor(Math.random() * types.length)];
+    element.setAttribute("data-icicle-size", size);
   }
-  return 3;
+  return parseInt(element.getAttribute("data-icicle-size"), 10);
 };
 
 var icicleValue = function (element) {
@@ -594,10 +604,9 @@ var addIcicle = function (element) {
   if (hitsEdge(index)) {
     return;
   }
-  var offsetTop = canvasHeight;
   var possible = [];
   for (index = 0; index < numCols; index += 1) {
-    if (!hitsAnyIcicle(index * tileWidth, offsetTop) && !hitsEdge(index)) {
+    if (!hitsAnyIcicle(index * tileWidth, canvasHeight) && !hitsEdge(index)) {
       possible.push(index);
     }
   }
@@ -606,11 +615,8 @@ var addIcicle = function (element) {
   }
   index = possible[Math.floor(Math.random() * possible.length)];
   var icicle = document.createElement("div");
-  var types = [1, 1, 1, 1, 2, 2, 3];
-  var size = types[Math.floor(Math.random() * types.length)];
-  icicle.setAttribute("data-icicle-size", size);
   icicle.setAttribute("class", "rock");
-  setTop(icicle, offsetTop);
+  setTop(icicle, canvasHeight);
   icicle.style.left = (index * tileWidth)+"px";
   $("#background").appendChild(icicle);
   cachedIcicles.push(icicle);
