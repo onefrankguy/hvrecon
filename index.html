@@ -37,11 +37,11 @@ a {
 }
 #viewport {
   position: relative;
+  overflow: hidden;
 }
 #background {
   position: relative;
   display: block;
-  overflow: hidden;
 }
 #terrain {
   position: absolute;
@@ -55,7 +55,7 @@ a {
 }
 .dialog {
   position: absolute;
-  top: 50%;
+  top: 100%;
   left: 0;
   display: block;
   height: 50%;
@@ -85,8 +85,15 @@ a {
 .dialog p+p {
   margin-top: 15px;
 }
+.active {
+  top: 50%;
+}
 .dismiss {
-  visibility: hidden;
+  -webkit-animation: dismiss 1.5s linear normal;
+}
+@-webkit-keyframes dismiss {
+  from { top: 50%; }
+  to   { top: 100%; }
 }
 #interface-left {
   display: block;
@@ -298,7 +305,7 @@ a {
   <div id="terrain" class="terrain"></div>
 </div>
 <img id="copter" src="img/copter.png"/>
-<div id="mission" class="dialog">
+<div id="mission" class="dialog active">
 <p>Look, I don't know what you did to piss Henley off, but she's given you
 recon duty. Scan rocks as you fly over them, and drop beacons on anything
 iteresting.</p>
