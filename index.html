@@ -288,6 +288,7 @@ a {
   <p>&ldquo;<a href="http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html">Hard Vacuum</a>&rdquo; art by Daniel Cook (<a href="http://lostgarden.com/">lostgarden.com</a>)</p>
 </div>
 <div id="fps"></div>
+<div id="time"></div>
 <div id="icicles"></div>
 <div id="units"></div>
 <div id="power"></div>
@@ -628,12 +629,14 @@ var moveUp = function (element, delta) {
   return warp;
 };
 
-var lastFPS = 0;
-var updateFPS = function () {
+var startTime = Date.now();
+var lastStatsUpdate = 0;
+var updateStats = function () {
   var now = Date.now();
-  if (now - lastFPS > 1000) {
-    lastFPS = now;
+  if (now - lastStatsUpdate > 1000) {
+    lastStatsUpdate = now;
     $("#fps").innerHTML = "FPS: "+Math.floor(1 / Timer.delta);
+    $("#time").innerHTML = "Time: "+Math.ceil((now - startTime) / 1000);
     $("#icicles").innerHTML = "Icicles: "+cachedIcicles.length;
   }
 };
@@ -684,7 +687,7 @@ var render = function (time) {
       updateIcicle(rows[y]);
     }
   }
-  updateFPS();
+  updateStats();
   updateFuel();
   updatePower();
 };
