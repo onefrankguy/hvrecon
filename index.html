@@ -192,35 +192,24 @@ p {
 .snow {
   background-image: url(img/snow.png);
 }
-.rock {
-  background: url(img/rock.png) 10px 20px no-repeat;
+.rock,
+.icicle1,
+.icicle2,
+.icicle3 {
+  background: url(img/icicles.png) 0 0 no-repeat;
   position: absolute;
-  top: 0;
-  left: 0;
   display: block;
   height: 60px;
   width: 40px;
+}
+.rock {
+  background-position: -120px 0;
 }
 .icicle1 {
-  background: url(img/icicle1.png) 10px 20px no-repeat;
-  position: absolute;
-  display: block;
-  height: 60px;
-  width: 40px;
+  background-position: -80px 0;
 }
 .icicle2 {
-  background: url(img/icicle2.png) 10px 0px no-repeat;
-  position: absolute;
-  display: block;
-  height: 60px;
-  width: 40px;
-}
-.icicle3 {
-  background: url(img/icicle3.png) 0px 0px no-repeat;
-  position: absolute;
-  display: block;
-  height: 60px;
-  width: 40px;
+  background-position: -40px 0;
 }
 .bar {
   display: block;
