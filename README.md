@@ -20,6 +20,18 @@ convert icon.png background.png \
 -delete 1 -alpha off -compose copy_opacity -composite icon-no-bg.png
 ~~~
 
+## License ##
+
+Design and code are licensed under a [MIT-style][] license. See the LICENSE.md document for
+more information. Graphics are licensed under a
+[Creative Commons Attribution 3.0 License][cc]. If you make use of the graphics,
+please include the following attribution in a visible location along with any
+other credits
+
+* "[Hard Vacuum][]" art by Daniel Cook (Lostgarden.com)
+
 
 [js13kGames competition]: http://js13kgames.com/ "HTML5 and JavaScript game development in 13 kilobytes"
 [Hard Vacuum]: http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html "Daniel Cook (lostgarden.com) - Game Post Mortem: Hard Vacuum"
+[MIT-style]: http://opensource.org/license/MIT "Open Source Initiative OSI - The MIT License"
+[cc]: http://creativecommons.org/licenses/by/3.0/us/
