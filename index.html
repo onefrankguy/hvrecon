@@ -710,6 +710,7 @@ var resetMission = function () {
   availablePower = maxPower;
   copterDistance = 0;
   Timer.reset();
+  updateOdometer();
 };
 
 var moveUp = function (element, delta) {
@@ -779,12 +780,11 @@ var updateOdometer = function () {
 };
 
 var render = function (time) {
-  if (running()) {
-    requestAnimationFrame(render);
-  }
-  else {
+  if (!running()) {
     resetMission();
+    return;
   }
+  requestAnimationFrame(render);
   Timer.tick(time);
   var rows = $("#background").childNodes;
   var y = 0;
