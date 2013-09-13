@@ -356,7 +356,6 @@ Well you'll figure it out.</p>
   <p>Design <abbr title="and">&amp;</abbr> dev by <a href="http://frankmitchell.org/">Frank Mitchell</a> for <a href="http://js13kgames.com/">js13kGames</a></p>
   <p>&ldquo;<a href="http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html">Hard Vacuum</a>&rdquo; art by Daniel Cook (<a href="http://lostgarden.com/">lostgarden.com</a>)</p>
 </div>
-<p id="fps"></p>
 </div>
 <script type="text/javascript">
 (function () {
@@ -732,16 +731,6 @@ var moveUp = function (element, delta) {
   return warp;
 };
 
-var startTime = Date.now();
-var lastStatsUpdate = 0;
-var updateStats = function () {
-  var now = Date.now();
-  if (now - lastStatsUpdate > 1000) {
-    lastStatsUpdate = now;
-    $("#fps").innerHTML = "FPS: "+Math.floor(1 / Timer.delta);
-  }
-};
-
 var lastPowerUpdate = 0;
 var updatePower = function () {
   var now = Date.now();
@@ -798,7 +787,6 @@ var render = function (time) {
       updateIcicle(rows[y]);
     }
   }
-  updateStats();
   updateFuel();
   updatePower();
   updateOdometer();
