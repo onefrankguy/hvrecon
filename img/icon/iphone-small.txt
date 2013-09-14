@@ -1,0 +1,37 @@
+# mtPaint layers
+1
+2
+snow-small.png
+Background
+1
+0
+0
+1
+0
+100
+copter-small.png
+Copter
+1
+0
+0
+1
+0
+100
+border-small.png
+Border
+1
+0
+0
+1
+0
+100
+# mtPaint animation
+1
+100
+frames
+f
+10
+0
+0
+0
+0
