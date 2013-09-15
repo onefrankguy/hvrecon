@@ -31,7 +31,7 @@ ImageMagick command line to remove a common background from icons.
 ~~~bash
 convert icon.png background.png \
 \( -clone 0 -clone 1 -compose difference -composite -threshold 0 \) \
--delete 1 -compose copy_opacity -composite icon-no-bg.png
+-delete 1 -alpha off -compose copy_opacity -composite icon-no-bg.png
 ~~~
 
 ## License ##
