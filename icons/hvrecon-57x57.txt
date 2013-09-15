@@ -1,7 +1,7 @@
 # mtPaint layers
 1
 2
-snow-small.png
+snow-57x57.png
 Background
 1
 0
@@ -9,7 +9,7 @@ Background
 1
 0
 100
-copter-small.png
+copter-57x57.png
 Copter
 1
 0
@@ -17,7 +17,7 @@ Copter
 1
 0
 100
-border-small.png
+border-57x57.png
 Border
 1
 0
