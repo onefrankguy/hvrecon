@@ -2,12 +2,5 @@ index.html
 img/copter.png
 img/hvrecon-57x57.png
 img/icicles.png
-img/interface-bottom.png
-img/interface-left.png
-img/interface-lower-left.png
-img/interface-lower-right.png
-img/interface-right.png
-img/interface-top.png
-img/interface-upper-left.png
-img/interface-upper-right.png
+img/interface.png
 img/snow.png
