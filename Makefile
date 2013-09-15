@@ -9,3 +9,6 @@ hvrecon.zip: *.html img/*.png
 
 clean:
 	rm -rf hvrecon.zip
+
+publish:
+	rsync -avz --files-from=manifest.txt ./ frankmitchell.org:/home/public/hvrecon/
