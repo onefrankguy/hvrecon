@@ -101,69 +101,100 @@ p {
 .dismiss {
   top: 100%;
 }
-#interface-left {
+.interface {
   display: block;
   position: absolute;
+  pointer-events: none;
+  background-image: url(img/interface.png);
+  background-repeat: no-repeat;
+}
+.interface.border-left {
   height: 100%;
-  width: 13px;
-  top: 0px;
-  left: 0px;
-  background: url(img/interface-left.png);
+  width: 0;
+  top: 0;
+  left: 0;
+  box-shadow:
+    0 0 0 1px #000400,
+    0 0 0 2px #636563,
+    0 0 0 3px #424542,
+    0 0 0 4px #313431,
+    0 0 0 5px #294963,
+    0 0 0 6px #636563,
+    0 0 0 7px #737573,
+    0 0 0 9px #525552,
+    0 0 0 10px #101410,
+    0 0 0 12px #212421,
+    0 0 0 13px #313431;
 }
-#interface-right {
-  display: block;
-  position: absolute;
+.interface.border-right {
   height: 100%;
-  width: 10px;
-  top: 0px;
-  right: 0px;
-  background: url(img/interface-right.png);
+  width: 0;
+  top: 0;
+  right: 0;
+  box-shadow:
+    0 0 0 1px  #000400,
+    0 0 0 2px  #424542,
+    0 0 0 3px  #313431,
+    0 0 0 4px  #6b7d94,
+    0 0 0 5px  #525552,
+    0 0 0 6px  #737573,
+    0 0 0 7px  #313431,
+    0 0 0 10px #737573;
 }
-#interface-top {
-  display: block;
-  position: absolute;
-  height: 9px;
+.interface.border-top {
+  height: 0;
   width: 100%;
-  top: 0px;
-  left: 0px;
-  background: url(img/interface-top.png);
+  top: 0;
+  left: 0;
+  box-shadow:
+    0 0 0 1px  #000400,
+    0 0 0 2px  #737573,
+    0 0 0 5px  #525552,
+    0 0 0 8px  #212421,
+    0 0 0 9px  #313431;
 }
-#interface-bottom {
-  display: block;
-  position: absolute;
-  height: 10px;
+.interface.border-bottom {
+  height: 0;
   width: 100%;
-  bottom: 0px;
-  left: 0px;
-  background: url(img/interface-bottom.png);
+  bottom: 0;
+  left: 0;
+  box-shadow:
+    0 0 0 1px  #000400,
+    0 0 0 2px  #313431,
+    0 0 0 3px  #424542,
+    0 0 0 5px  #525552,
+    0 0 0 6px  #424542,
+    0 0 0 8px  #525552,
+    0 0 0 9px  #636563,
+    0 0 0 10px #313431;
 }
-#upper-left {
-  display: block;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  pointer-events: none;
+.interface.corner-top-left {
+  height: 40px;
+  width: 68px;
+  top: 0;
+  left: 0;
+  background-position: 0 0;
 }
-#upper-right {
-  display: block;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  pointer-events: none;
+.interface.corner-top-right {
+  height: 28px;
+  width: 68px;
+  top: 0;
+  right: 0;
+  background-position: -73px 0;
 }
-#lower-left {
-  display: block;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  pointer-events: none;
+.interface.corner-bottom-right {
+  height: 54px;
+  width: 69px;
+  bottom: 0;
+  right: 0;
+  background-position: -72px -30px;
 }
-#lower-right {
-  display: block;
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  pointer-events: none;
+.interface.corner-bottom-left {
+  height: 44px;
+  width: 72px;
+  bottom: 0;
+  left: 0;
+  background-position: 0 -40px;
 }
 #power-cells {
   display: block;
@@ -321,14 +352,14 @@ interesting.</p>
 Well you'll figure it out.</p>
 <p>Good luck!</p>
 </div>
-<div id="interface-left"></div>
-<div id="interface-right"></div>
-<div id="interface-top"></div>
-<div id="interface-bottom"></div>
-<img id="upper-left" src="img/interface-upper-left.png"/>
-<img id="upper-right" src="img/interface-upper-right.png"/>
-<img id="lower-left" src="img/interface-lower-left.png"/>
-<img id="lower-right" src="img/interface-lower-right.png"/>
+<div class="interface border-left"></div>
+<div class="interface border-right"></div>
+<div class="interface border-top"></div>
+<div class="interface border-bottom"></div>
+<div class="interface corner-top-left"></div>
+<div class="interface corner-top-right"></div>
+<div class="interface corner-bottom-right"></div>
+<div class="interface corner-bottom-left"></div>
 <div id="power-cells" class="bar">
   <span id="battery0" class="button lght0 lvl8"></span>
   <span id="battery1" class="button lght1 lvl8"></span>
