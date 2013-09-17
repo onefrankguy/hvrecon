@@ -226,23 +226,44 @@ p {
 .icicle1,
 .icicle2,
 .icicle3 {
-  background: url(img/icicles.png) 0 0 no-repeat;
   position: absolute;
   display: block;
   height: 60px;
   width: 40px;
 }
-.crater {
-  background-position: -160px 0;
+.crater:before,
+.rock:before,
+.icicle1:before,
+.icicle2:before,
+.icicle3:before {
+  background: url(img/icicles.png) 0 0 no-repeat;
+  position: relative;
+  top: 20px;
+  left: 10px;
+  content: "";
+  display: block;
+  height: 20px;
+  width: 20px;
 }
-.rock {
-  background-position: -120px 0;
+.crater:before {
+  background-position: -60px -20px;
 }
-.icicle1 {
-  background-position: -80px 0;
+.rock:before {
+  background-position: -60px 0;
 }
-.icicle2 {
+.icicle1:before {
+  background-position: -40px -40px;
+}
+.icicle2:before {
+  top: 0;
+  height: 40px;
   background-position: -40px 0;
+}
+.icicle3:before {
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 40px;
 }
 .bar {
   display: block;
