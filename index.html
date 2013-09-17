@@ -221,6 +221,24 @@ p {
 .snow {
   background-image: url(img/snow.png);
 }
+.crater1,
+.crater2,
+.crater3 {
+  background: url(img/icicles.png) 0 0 no-repeat;
+  position: absolute;
+  display: block;
+  height: 60px;
+  width: 40px;
+}
+.crater1 {
+  background-position: -240px 0;
+}
+.crater2 {
+  background-position: -200px 0;
+}
+.crater3 {
+  background-position: -160px 0;
+}
 .rock,
 .icicle1,
 .icicle2,
@@ -528,6 +546,14 @@ var isIcicle = function (element) {
   );
 };
 
+var isCrater = function (element) {
+  return (
+    hasClass(element, "crater1") ||
+    hasClass(element, "crater2") ||
+    hasClass(element, "crater3")
+  );
+};
+
 var isDialog = function (element) {
   return hasClass(element, "dialog");
 };
@@ -667,6 +693,10 @@ var addIcicle = function (element) {
   cachedIcicles.push(icicle);
 };
 
+var removeCrater = function (element) {
+  $("#background").removeChild(element);
+};
+
 var removeIcicle = function (element) {
   var index = touchedIcicles.indexOf(element);
   if (index >= 0) {
@@ -676,17 +706,18 @@ var removeIcicle = function (element) {
   if (index >= 0) {
     cachedIcicles.splice(index, 1);
   }
-  $("#background").removeChild(element);
+  element.className = "crater"+icicleSize(element);
 };
 
 var updateIcicle = function (element) {
   if (isIcicle(element)) {
     removeIcicle(element);
-    return;
+  }
+  if (isCrater(element)) {
+    removeCrater(element);
   }
   if (isTerrain(element)) {
     addIcicle(element);
-    return;
   }
 };
 
@@ -737,7 +768,7 @@ var moveUp = function (element, delta) {
   var offset = getTop(element) + delta;
   var warp = false;
   if (offset < -tileHeight) {
-    if (isIcicle(element)) {
+    if (isIcicle(element) || isCrater(element)) {
       offset = canvasHeight + delta;
     }
     if (isTerrain(element)) {
