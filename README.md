@@ -23,6 +23,8 @@ A bunch of stuff isn't in, mostly due to time and size constraints.
 * Copter animations
 * Variable terrain
 * Icicle telport FX
+* More mission variety
+* Tweetable high scores
 
 ### Notes ###
 
