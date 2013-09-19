@@ -41,22 +41,22 @@ p {
   position: relative;
   overflow: hidden;
 }
-#background {
-  position: relative;
-  display: block;
-}
 #terrain {
   position: absolute;
-  background: url(../img/snow.png) 10px 0 repeat;
+}
+.sprite {
+  display: block;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  background: url(../img/snow.png);
 }
 </style>
 </head>
 <body>
 <div id="wrapper">
 <div id="viewport">
-<div id="background">
-<div id="terrain" class="terrain"></div>
-</div>
+  <div id="terrain" class="terrain"></div>
 </div>
 <p id="fps">FPS: 0</p>
 </div>
@@ -121,6 +121,16 @@ var getTop = function (element) {
   return value;
 };
 
+var setLeft = function (element, value) {
+  if (element) {
+    element.setAttribute("data-left", value);
+    if (element.style) {
+      value = (value + 0.5) | 0;
+      element.style.left = value+"px";
+    }
+  }
+};
+
 var Timer = {};
 Timer.tick = function (now) {
   Timer.delta = (now - (Timer.then || now)) / 1000;
@@ -136,19 +146,14 @@ var tileHeight = 20;
 var tileWidth = 20;
 var numCols = canvasWidth / tileWidth;
 var numRows = (canvasHeight / tileHeight) + 1;
-var copterSpeed = 20;
+var scrollSpeed = 20;
 
 var hasClass = function (element, klass) {
   return element.classList.contains(klass);
 };
 
 var isSprite = function (element) {
-  return (
-    hasClass(element, "icicle1") ||
-    hasClass(element, "icicle2") ||
-    hasClass(element, "icicle3") ||
-    hasClass(element, "rock")
-  );
+  return hasClass(element, "sprite");
 };
 
 var isTerrain = function (element) {
@@ -156,16 +161,23 @@ var isTerrain = function (element) {
 };
 
 var setup = function () {
-  var y = 0;
   var viewport = $("#viewport");
   viewport.style.height = canvasHeight+"px";
   viewport.style.width = canvasWidth+"px";
-  var background = $("#background");
-  background.style.width = viewport.style.width;
-  background.style.height = viewport.style.height;
+
   var terrain = $("#terrain");
   terrain.style.width = viewport.style.width;
   terrain.style.height = (numRows * tileHeight)+"px";
+
+  for (var y = 0; y < numRows; y += 1) {
+    for (var x = 0; x < numCols; x += 1) {
+      var sprite = document.createElement("div");
+      sprite.className = "sprite";
+      setTop(sprite, y * tileHeight);
+      setLeft(sprite, x * tileWidth);
+      terrain.appendChild(sprite);
+    }
+  }
 };
 
 var moveUp = function (element, delta) {
@@ -177,9 +189,6 @@ var moveUp = function (element, delta) {
   if (offset < -tileHeight) {
     if (isSprite(element)) {
       offset = canvasHeight + delta;
-    }
-    if (isTerrain(element)) {
-      offset = delta;
     }
     warp = true;
   }
@@ -199,11 +208,10 @@ var updateFPS = function () {
 var render = function (time) {
   requestAnimationFrame(render);
   Timer.tick(time);
-  var rows = $("#background").childNodes;
-  var y = 0;
-  var offset = -copterSpeed * Timer.delta;
-  for (y = 0; y < rows.length; y += 1) {
-    moveUp(rows[y], offset);
+  var sprites = $("#terrain").childNodes;
+  var offset = -scrollSpeed * Timer.delta;
+  for (var i = 0; i < sprites.length; i += 1) {
+    moveUp(sprites[i], offset);
   }
   updateFPS();
 };
