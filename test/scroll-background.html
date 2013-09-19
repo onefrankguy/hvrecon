@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>HV Recon Test - Scroll Background</title>
+<style type="text/css">
+* {
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+*::selection {
+  background: transparent;
+  color: transparent;
+}
+html {
+  height: 100%;
+  font-size: 62.5%;
+  font-family: Helvetica, sans-serif;
+  -webkit-text-size-adjust: none;
+}
+body {
+  background: #313431;
+  color: #ded8de;
+}
+p {
+  font-weight: bold;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+}
+#wrapper {
+  width: 320px;
+  margin: 0 auto;
+}
+#viewport {
+  position: relative;
+  overflow: hidden;
+}
+#terrain {
+  position: absolute;
+  background: url(../img/snow.png);
+}
+.row {
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 100%;
+}
+.sprite {
+  position: absolute;
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+</style>
+</head>
+<body>
+<div id="wrapper">
+<div id="viewport">
+  <div id="terrain" class="terrain"></div>
+</div>
+<p id="fps">FPS: 0</p>
+</div>
+<script type="text/javascript">
+(function () {
+  var lastTime = 0;
+  var vendor = ["ms", "mos", "webkit", "o"];
+  var i = 0;
+  while (i < vendor.length && !window.requestAnimationFrame) {
+    window.requestAnimationFrame = window[vendor[i]+"RequestAnimationFrame"];
+    window.cancelAnimationFrame = window[vendor[i]+"CancelAnimationFrame"] || window[vendor[i]+"RequestCancelAnimationFrame"];
+    i += 1;
+  }
+
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function (callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var timerId = setTimeout(function () {
+        callback(currTime + timeToCall);
+      }, timeToCall);
+      lastTime = currTime + timeToCall;
+      return timerId;
+    };
+  }
+
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function (id) {
+      clearTimeout(id);
+    };
+  }
+}());
+
+var $ = function (selector) {
+  if (selector.indexOf("#") === 0) {
+    return document.getElementById(selector.slice(1));
+  }
+  if (selector.indexOf(".") === 0) {
+    return document.getElementByClassName(selector.slice(1));
+  }
+  return null;
+};
+
+var setTop = function (element, value) {
+  if (element) {
+    element.setAttribute("data-top", value);
+    if (element.style) {
+      value = (value + 0.5) | 0;
+      element.style.top = value+"px";
+    }
+  }
+};
+
+var getTop = function (element) {
+  var value = 0;
+  if (element && element['getAttribute']) {
+    value = parseFloat(element.getAttribute("data-top"), 10);
+    if (isNaN(value) && element.style) {
+      value = parseFloat(element.style.top, 10);
+    }
+  }
+  return value;
+};
+
+var setLeft = function (element, value) {
+  if (element) {
+    element.setAttribute("data-left", value);
+    if (element.style) {
+      value = (value + 0.5) | 0;
+      element.style.left = value+"px";
+    }
+  }
+};
+
+var Timer = {};
+Timer.tick = function (now) {
+  Timer.delta = (now - (Timer.then || now)) / 1000;
+  Timer.then = now;
+};
+Timer.reset = function () {
+  Timer.then = null;
+};
+
+var canvasHeight = 440;
+var canvasWidth = 320;
+var tileHeight = 20;
+var tileWidth = 20;
+var numCols = canvasWidth / tileWidth;
+var numRows = (canvasHeight / tileHeight) + 1;
+var scrollSpeed = 20;
+
+var hasClass = function (element, klass) {
+  return element.classList.contains(klass);
+};
+
+var isSprite = function (element) {
+  return hasClass(element, "sprite");
+};
+
+var isTerrain = function (element) {
+  return hasClass(element, "terrain");
+};
+
+var setup = function () {
+  var viewport = $("#viewport");
+  viewport.style.height = canvasHeight+"px";
+  viewport.style.width = canvasWidth+"px";
+
+  var terrain = $("#terrain");
+  terrain.style.width = viewport.style.width;
+  terrain.style.height = (numRows * tileHeight)+"px";
+
+  for (var y = 0; y < numRows; y += 1) {
+    var row = document.createElement("div");
+    row.className = "row";
+    for (var x = 0; x < numCols; x += 1) {
+      var sprite = document.createElement("div");
+      sprite.className = "sprite";
+      setLeft(sprite, x * tileWidth);
+      row.appendChild(sprite);
+    }
+    terrain.appendChild(row);
+  }
+};
+
+var moveUp = function (element, delta) {
+  if (!element || !element.style) {
+    return;
+  }
+  var offset = getTop(element) + delta;
+  var warp = false;
+  if (offset < -tileHeight) {
+    if (isTerrain(element)) {
+      offset = delta;
+    }
+    warp = true;
+  }
+  setTop(element, offset);
+  return warp;
+};
+
+var lastFPSUpdate = 0;
+var updateFPS = function () {
+  var now = Date.now();
+  if (now - lastFPSUpdate > 1000) {
+    $("#fps").innerHTML = "FPS: "+Math.floor(1 / Timer.delta);
+    lastFPSUpdate = now;
+  }
+};
+
+var render = function (time) {
+  requestAnimationFrame(render);
+  Timer.tick(time);
+  var terrain = $("#terrain");
+  var offset = -scrollSpeed * Timer.delta;
+  if (moveUp(terrain, offset)) {
+    var row = terrain.removeChild(terrain.firstChild);
+    terrain.appendChild(row);
+  }
+  updateFPS();
+};
+
+setup();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>
