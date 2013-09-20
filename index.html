@@ -45,13 +45,15 @@ p {
   position: relative;
   overflow: hidden;
 }
-#background {
-  position: relative;
-  display: block;
-}
 #terrain {
   position: absolute;
   background: url(img/snow.png) 10px 0 repeat;
+}
+.row {
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 100%;
 }
 #copter {
   display: block;
@@ -689,15 +691,14 @@ var addIcicle = function (element) {
   }
   index = randomValue(possible);
   var icicle = document.createElement("div");
-  icicle.setAttribute("class", "rock");
-  setTop(icicle, canvasHeight);
+  icicle.className = "rock";
   icicle.style.left = (index * tileWidth)+"px";
-  $("#background").appendChild(icicle);
+  element.appendChild(icicle);
   cachedIcicles.push(icicle);
 };
 
-var removeCrater = function (element) {
-  $("#background").removeChild(element);
+var removeElement = function (element) {
+  element.parentNode.removeChild(element);
 };
 
 var removeIcicle = function (element) {
@@ -712,16 +713,20 @@ var removeIcicle = function (element) {
   element.className = "crater";
 };
 
-var updateIcicle = function (element) {
-  if (isIcicle(element)) {
-    removeIcicle(element);
+var updateRow = function (element) {
+  var i = 0;
+  var sprites = element.childNodes;
+  var sprite = null;
+  for (i = 0; i < sprites.length; i += 1) {
+    sprite = sprites[i];
+    if (isIcicle(sprite)) {
+      removeIcicle(sprite);
+    }
+    if (isCrater(sprite)) {
+      removeElement(sprite);
+    }
   }
-  if (isCrater(element)) {
-    removeCrater(element);
-  }
-  if (isTerrain(element)) {
-    addIcicle(element);
-  }
+  addIcicle(element);
 };
 
 var running = function () {
@@ -729,17 +734,22 @@ var running = function () {
 };
 
 var setup = function () {
+  var i = 0;
+  var row = null;
+
   var viewport = $("#viewport");
   viewport.style.height = canvasHeight+"px";
   viewport.style.width = canvasWidth+"px";
 
-  var background = $("#background");
-  background.style.width = viewport.style.width;
-  background.style.height = viewport.style.height;
-
   var terrain = $("#terrain");
   terrain.style.width = viewport.style.width;
   terrain.style.height = (numRows * tileHeight)+"px";
+
+  for (i = 0; i < numRows; i += 1) {
+    row = document.createElement("div");
+    row.className = "row";
+    terrain.appendChild(row);
+  }
 
   addTouch(viewport, onBoardTouch, updateIcicles);
 };
@@ -767,18 +777,10 @@ var resetMission = function () {
 };
 
 var moveUp = function (element, delta) {
-  if (!element || !element.style) {
-    return;
-  }
   var offset = getTop(element) + delta;
   var warp = false;
   if (offset < -tileHeight) {
-    if (isIcicle(element) || isCrater(element)) {
-      offset = canvasHeight + delta;
-    }
-    if (isTerrain(element)) {
-      offset = delta;
-    }
+    offset = delta;
     warp = true;
   }
   setTop(element, offset);
@@ -830,17 +832,17 @@ var render = function (time) {
   }
   requestAnimationFrame(render);
   Timer.tick(time);
-  var rows = $("#background").childNodes;
-  var y = 0;
+  var terrain = $("#terrain");
+  var row = null;
   var offset = -copterSpeed * Timer.delta;
   copterDistance += -offset;
   if (copterDistance >= 10000) {
     copterDistance = 0;
   }
-  for (y = 0; y < rows.length; y += 1) {
-    if (moveUp(rows[y], offset)) {
-      updateIcicle(rows[y]);
-    }
+  if (moveUp(terrain, offset)) {
+    row = terrain.removeChild(terrain.firstChild);
+    updateRow(row);
+    terrain.appendChild(row);
   }
   updateFuel();
   updatePower();
