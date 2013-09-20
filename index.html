@@ -231,7 +231,6 @@ p {
   height: 60px;
   width: 40px;
   pointer-events: auto;
-  border: 1px solid red;
 }
 .crater:before,
 .rock:before,
@@ -674,7 +673,7 @@ var hitsAnyIcicle = function (x, y) {
 };
 
 var hitsEdge = function (index) {
-  return index < 2 || index >= numCols - 2;
+  return index < 1 || index >= numCols - 2;
 };
 
 var addIcicle = function (element) {
