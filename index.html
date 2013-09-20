@@ -443,10 +443,14 @@ var $ = function (selector) {
 var setTop = function (element, value) {
   if (element) {
     element.setAttribute("data-top", value);
-    if (element.style) {
-      value = (value + 0.5) | 0;
-      element.style.top = value+"px";
-    }
+  }
+}
+
+var snapTop = function (element) {
+  var value = getTop(element);
+  if (element && element.style) {
+    value = (value + 0.5) | 0;
+    element.style.top = value+"px";
   }
 };
 
@@ -693,6 +697,7 @@ var addIcicle = function (element) {
   var icicle = document.createElement("div");
   icicle.className = "rock";
   icicle.style.left = (index * tileWidth)+"px";
+  setTop(icicle, canvasHeight);
   element.appendChild(icicle);
   cachedIcicles.push(icicle);
 };
@@ -834,16 +839,21 @@ var render = function (time) {
   Timer.tick(time);
   var terrain = $("#terrain");
   var row = null;
+  var i = 0;
   var offset = -copterSpeed * Timer.delta;
   copterDistance += -offset;
   if (copterDistance >= 10000) {
     copterDistance = 0;
+  }
+  for (i = 0; i < cachedIcicles.length; i += 1) {
+    moveUp(cachedIcicles[i], offset);
   }
   if (moveUp(terrain, offset)) {
     row = terrain.removeChild(terrain.firstChild);
     updateRow(row);
     terrain.appendChild(row);
   }
+  snapTop(terrain);
   updateFuel();
   updatePower();
   updateOdometer();
