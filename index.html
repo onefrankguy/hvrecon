@@ -231,6 +231,7 @@ p {
   height: 60px;
   width: 40px;
   pointer-events: auto;
+  border: 1px solid red;
 }
 .crater:before,
 .rock:before,
@@ -646,25 +647,26 @@ var updateIcicles = function () {
   }, reactTime);
 };
 
-var icicleCenter = function (element) {
-  var x = getLeft(element) + 20;
-  var y = getTop(element) + 20;
-  return { x: x, y: y };
-};
-
-var icicleDistance = function (element, x, y) {
-  var center = icicleCenter(element);
-  var dx = center.x - x;
-  var dy = center.y - y;
-  return Math.sqrt((dx * dx) + (dy * dy));
+var overlapsIcicle = function (element, bl, bt) {
+  // Two rectangles do not  intersect if
+  // * A's left edge is to the right of B's right edge
+  // * A's right edge is to the left of B's left edge
+  // * A's top edge is below B's bottom edge
+  // * A's bottom edge is above B's top edge
+  // Invert those conditions with De Morgan's Law to test for overlap
+  var al = getLeft(element);
+  var at = getTop(element);
+  var ar = al + 40;
+  var ab = at + 60;
+  var br = bl + 40;
+  var bb = bt + 60;
+  return al < br && ar > bl && at < bb && ab > bt;
 };
 
 var hitsAnyIcicle = function (x, y) {
-  var max = Math.sqrt((40 * 40) + (40 * 40));
   var i = 0;
   for (i = 0; i < cachedIcicles.length; i += 1) {
-    var dist = icicleDistance(cachedIcicles[i], x, y);
-    if (dist <= max) {
+    if (overlapsIcicle(cachedIcicles[i], x, y)) {
       return true;
     }
   }
