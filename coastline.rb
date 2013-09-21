@@ -51,6 +51,9 @@ def iterate width, height
   tiles
 end
 
+snooze = 0.05
+snooze = ARGV[0].to_f if ARGV.length > 0
+
 loop do
   puts '+' + ('-' * 16) + '+'
   iterate(16, 22).each do |value|
@@ -59,6 +62,6 @@ loop do
     coast += ' ' * (16 - value)
     coast += '|'
     puts coast
-    sleep 0.05
+    sleep snooze
   end
 end
