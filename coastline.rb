@@ -58,8 +58,10 @@ def iterate width, height
 end
 
 loop do
+  puts '+' + ('-' * 16) + '+'
   iterate(16, 22).each do |value|
-    coast = '.' * value
+    coast = '|'
+    coast += '.' * value
     coast += ' ' * (16 - value)
     coast += '|'
     puts coast
