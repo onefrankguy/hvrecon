@@ -54,6 +54,8 @@ def iterate width, height
     tiles[line[:end][:x]] = line[:end][:y]
   end
 
+  tiles[ 0] = width / 2
+  tiles[-1] = width / 2
   tiles
 end
 
