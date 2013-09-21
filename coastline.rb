@@ -33,13 +33,13 @@ def iterate width, height
   lines = []
   lines << mkline(mkpoint(0, length), mkpoint(height - 1, length))
 
-  rand_max = width / 2
+  rand_max = 1.0
 
   offset = tiles.size
   while offset > 0
     lines.map! do |line|
       mid = midpoint(line)
-      length = Random.rand(Range.new(-rand_max, rand_max))
+      length = Random.rand(Range.new(-rand_max, rand_max)) * width
       mid[:y] += length.to_i
       mid[:y] = clamp(mid[:y], 0, width)
       rand_max *= 0.5
