@@ -38,7 +38,7 @@ def iterate width, height
       mid = midpoint(line)
       length = Random.rand(Range.new(-rand_max, rand_max)) * width
       mid[:y] += length.to_i
-      mid[:y] = clamp(mid[:y], 0, width)
+      mid[:y] = clamp(mid[:y], 4, width)
       tiles[mid[:x]] = mid[:y]
       [mkline(line[:start], mid), mkline(mid, line[:end])]
     end
