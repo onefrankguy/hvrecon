@@ -1,7 +1,5 @@
 #!ruby
 
-require 'pp'
-
 def clamp value, min, max
   return min if value < min
   return max if value > max
@@ -42,16 +40,12 @@ def iterate width, height
       length = Random.rand(Range.new(-rand_max, rand_max)) * width
       mid[:y] += length.to_i
       mid[:y] = clamp(mid[:y], 0, width)
+      tiles[mid[:x]] = mid[:y]
       rand_max *= 0.5
       [mkline(line[:start], mid), mkline(mid, line[:end])]
     end
     lines.flatten!
     offset /= 2
-  end
-
-  lines.each do |line|
-    tiles[line[:start][:x]] = line[:start][:y]
-    tiles[line[:end][:x]] = line[:end][:y]
   end
 
   tiles[ 0] = width / 2
