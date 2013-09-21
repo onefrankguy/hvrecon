@@ -33,8 +33,7 @@ def iterate width, height
 
   rand_max = 1.0
 
-  offset = tiles.size
-  while offset > 0
+  while lines.length < tiles.length
     lines.map! do |line|
       mid = midpoint(line)
       length = Random.rand(Range.new(-rand_max, rand_max)) * width
@@ -45,7 +44,6 @@ def iterate width, height
     end
     lines.flatten!
     rand_max *= 0.5
-    offset /= 2
   end
 
   tiles[ 0] = base
