@@ -23,13 +23,13 @@ def midpoint line
 end
 
 def iterate width, height
-  length = width / 2
+  base = (width * 0.5).to_i
 
   tiles = []
-  height.times { tiles << length }
+  height.times { tiles << base }
 
   lines = []
-  lines << mkline(mkpoint(0, length), mkpoint(height - 1, length))
+  lines << mkline(mkpoint(0, base), mkpoint(height - 1, base))
 
   rand_max = 1.0
 
@@ -41,15 +41,15 @@ def iterate width, height
       mid[:y] += length.to_i
       mid[:y] = clamp(mid[:y], 0, width)
       tiles[mid[:x]] = mid[:y]
-      rand_max *= 0.5
       [mkline(line[:start], mid), mkline(mid, line[:end])]
     end
     lines.flatten!
+    rand_max *= 0.5
     offset /= 2
   end
 
-  tiles[ 0] = width / 2
-  tiles[-1] = width / 2
+  tiles[ 0] = base
+  tiles[-1] = base
   tiles
 end
 
