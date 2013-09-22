@@ -56,6 +56,18 @@ p {
   height: 20px;
   width: 100%;
 }
+.tile {
+  position: absolute;
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+.tile.snow {
+  background: url(img/snow.png) 0 0 no-repeat;
+}
+.tile.ice {
+  background: url(img/terrain.png) 60px 40px no-repeat;
+}
 #copter {
   display: block;
   position: absolute;
@@ -429,6 +441,41 @@ Well you'll figure it out.</p>
   }
 }());
 
+;(function (Terrain) {
+"use strict";
+
+var canvasHeight = 0
+  , canvasWidth = 0
+  , tileHeight = 20
+  , tileWidth = 20
+
+Terrain.width = function (value) {
+  if (value === undefined) {
+    return canvasWidth
+  }
+  canvasWidth = value
+}
+
+Terrain.height = function (value) {
+  if (value === undefined) {
+    return canvasHeight
+  }
+  canvasHeight = value
+}
+
+Terrain.numRows = function () {
+  return (this.height() / tileHeight) + 1
+}
+
+Terrain.numCols = function () {
+  return this.width() / tileWidth;
+}
+
+})(window.Terrain = window.Terrain || {})
+
+Terrain.height(440)
+Terrain.width(320)
+
 var $ = function (selector) {
   if (selector.indexOf("#") === 0) {
     return document.getElementById(selector.slice(1));
@@ -518,14 +565,10 @@ Timer.reset = function () {
   Timer.then = null;
 };
 
-var canvasHeight = 440;
-var canvasWidth = 320;
 var tileHeight = 20;
 var tileWidth = 20;
-var numCols = canvasWidth / tileWidth;
-var numRows = (canvasHeight / tileHeight) + 1;
 var copterSpeed = 20;
-var maxIcicles = numRows;
+var maxIcicles = Terrain.numRows()
 var cachedIcicles = [];
 var fuelCost = 0.675;
 var maxPower = 81;
@@ -604,7 +647,7 @@ var randomValue = function (array) {
 var icicleSize = function (element) {
   if (!element.hasAttribute("data-icicle-size")) {
     var offset = getTop(element);
-    var zone = Math.ceil(canvasHeight / 3);
+    var zone = Math.ceil(Terrain.height() / 3);
     var types = [1, 1, 1, 1, 2, 2, 3];
     if (offset <= zone * 2) {
         types = [1, 1, 2, 2, 2, 2, 3];
@@ -673,20 +716,20 @@ var hitsAnyIcicle = function (x, y) {
 };
 
 var hitsEdge = function (index) {
-  return index < 1 || index >= numCols - 2;
+  return index < 1 || index >= Terrain.numCols() - 2;
 };
 
 var addIcicle = function (element) {
   if (cachedIcicles.length >= maxIcicles) {
     return;
   }
-  var index = Math.floor(Math.random() * numCols);
+  var index = Math.floor(Math.random() * Terrain.numCols());
   if (hitsEdge(index)) {
     return;
   }
   var possible = [];
-  for (index = 0; index < numCols; index += 1) {
-    if (!hitsAnyIcicle(index * tileWidth, canvasHeight) && !hitsEdge(index)) {
+  for (index = 0; index < Terrain.numCols(); index += 1) {
+    if (!hitsAnyIcicle(index * tileWidth, Terrain.height()) && !hitsEdge(index)) {
       possible.push(index);
     }
   }
@@ -697,7 +740,7 @@ var addIcicle = function (element) {
   var icicle = document.createElement("div");
   icicle.className = "rock";
   icicle.style.left = (index * tileWidth)+"px";
-  setTop(icicle, canvasHeight);
+  setTop(icicle, Terrain.height());
   element.appendChild(icicle);
   cachedIcicles.push(icicle);
 };
@@ -743,14 +786,14 @@ var setup = function () {
   var row = null;
 
   var viewport = $("#viewport");
-  viewport.style.height = canvasHeight+"px";
-  viewport.style.width = canvasWidth+"px";
+  viewport.style.height = Terrain.height()+"px";
+  viewport.style.width = Terrain.width()+"px";
 
   var terrain = $("#terrain");
   terrain.style.width = viewport.style.width;
-  terrain.style.height = (numRows * tileHeight)+"px";
+  terrain.style.height = (Terrain.numRows() * tileHeight)+"px";
 
-  for (i = 0; i < numRows; i += 1) {
+  for (i = 0; i < Terrain.numRows(); i += 1) {
     row = document.createElement("div");
     row.className = "row";
     terrain.appendChild(row);
