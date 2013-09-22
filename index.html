@@ -64,8 +64,41 @@ p {
 .snow {
   background: url(img/snow.png) 10px 0 repeat;
 }
-.ice {
-  background: url(img/terrain.png) -40px -40px repeat;
+.ice2snow-left {
+  background: url(img/ice.png) 0 0 repeat;
+}
+.ice2snow-left:before {
+  content: "";
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 20px;
+  background: url(img/terrain.png) 0 -40px no-repeat;
+}
+.ice2snow-top {
+  background: url(img/ice2snow-top.png) 0 0 repeat;
+}
+.ice2snow-top:before {
+  content: "";
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 20px;
+  background: url(img/terrain.png) 0 0 no-repeat;
+}
+.ice2snow-top-fill {
+  background: url(img/ice.png) 0 0 repeat;
+}
+.ice2snow-top-fill:before {
+  content: "";
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 20px;
+  background: url(img/terrain.png) -40px -120px no-repeat;
+}
+.ice2snow-bottom {
+  background: url(img/ice.png) 0 0 repeat;
 }
 #copter {
   display: block;
@@ -651,12 +684,32 @@ Terrain.numCols = function () {
 
 Terrain.updateRow = function (row) {
   var tile = $(document.createElement('div'))
+    , fill = null
     , prev = Coast.prev()
     , next = Coast.next()
 
-  tile.classify('tile ice')
-  tile.left((tileWidth * next) - 10)
-  $(row).html('').appendChild(tile)
+  row = $(row).html('')
+
+  // Turn the ice into snow
+  if (next > prev) {
+  }
+  // Turn the snow into ice
+  else if (next < prev) {
+    tile.classify('tile ice2snow-top')
+    tile.width(tileWidth * prev)
+    row.appendChild(tile)
+    fill = $(document.createElement('div'))
+    fill.classify('tile ice2snow-top-fill')
+    fill.width(tileWidth * next)
+    row.appendChild(fill)
+  }
+  // Same as it ever was
+  else {
+    tile.classify('tile ice2snow-left')
+    tile.width(tileWidth * (this.numCols() - next))
+    row.appendChild(tile)
+  }
+
 }
 
 Terrain.makeRow = function () {
