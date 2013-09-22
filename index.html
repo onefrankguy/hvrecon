@@ -505,10 +505,107 @@ window.jQuery = root
 
 })()
 
+;(function (Coast) {
+"use strict";
+
+var mapHeight = 0
+  , mapWidth = 0
+  , tileIndex = 0
+  , tiles = []
+  , lines = []
+
+function mkpoint (x, y) {
+  return { x: Math.round(x), y: Math.round(y) }
+}
+
+function mkline (start, end) {
+  return { start: start, end: end }
+}
+
+function midpoint (line) {
+  var x = (line.start.x + line.end.x) / 2
+    , y = (line.start.y + line.end.y) / 2
+  return mkpoint(x, y)
+}
+
+function clamp(value, min, max) {
+  if (value < min) {
+    return min
+  }
+  if (value > max) {
+    return max
+  }
+  return value
+}
+
+function randBetween (min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function generate () {
+  var base = mapWidth * 0.5
+    , rand_max = 1.0
+    , line = null
+    , mid = null
+    , length = 0
+    , merged = []
+    , i = 0
+
+  tiles = []
+  for (i = 0; i < mapHeight; i += 1) {
+    tiles.push(base)
+  }
+
+  lines = []
+  lines.push(mkline(mkpoint(0, base), mkpoint(mapHeight - 1, base)))
+
+  while (lines.length < tiles.length) {
+    for (i = 0; i < lines.length; i += 1) {
+      line = lines[i]
+      mid = midpoint(line)
+      length = randBetween(-rand_max, rand_max) * mapWidth
+      mid.y += Math.round(length)
+      mid.y = clamp(mid.y, 4, mapWidth - 1)
+      tiles[mid.x] = mid.y
+      lines[i] = [mkline(line.start, mid), mkline(mid, line.end)]
+    }
+    merged = []
+    lines = merged.concat.apply(merged, lines)
+    rand_max *= 0.5
+  }
+}
+
+Coast.height = function (value) {
+  if (value === undefined) {
+    return mapHeight
+  }
+  mapHeight = value
+}
+
+Coast.width = function (value) {
+  if (value === undefined) {
+    return mapWidth
+  }
+  mapWidth = value
+}
+
+Coast.next = function () {
+  if (tileIndex >= tiles.length) {
+    generate()
+    tileIndex = 0
+  }
+  var value = tiles[tileIndex]
+  tileIndex += 1
+  return value
+}
+
+})(window.Coast = window.Coast || {})
+
 ;(function (Terrain) {
 "use strict";
 
 var $ = window.jQuery
+  , Coast = window.Coast
   , canvasHeight = 0
   , canvasWidth = 0
   , tileHeight = 20
@@ -519,6 +616,7 @@ Terrain.width = function (value) {
     return canvasWidth
   }
   canvasWidth = value
+  Coast.width(canvasWidth / tileWidth)
 }
 
 Terrain.height = function (value) {
@@ -526,6 +624,7 @@ Terrain.height = function (value) {
     return canvasHeight
   }
   canvasHeight = value
+  Coast.height((canvasHeight / tileHeight) + 1)
 }
 
 Terrain.numRows = function () {
@@ -536,16 +635,17 @@ Terrain.numCols = function () {
   return this.width() / tileWidth;
 }
 
+Terrain.updateRow = function (row) {
+  var tile = $(document.createElement('div'))
+  tile.classify('tile ice')
+  tile.left((tileWidth * Coast.next()) - 10)
+  row.appendChild(tile)
+}
+
 Terrain.makeRow = function () {
   var row = $(document.createElement('div'))
-    , tile = null
-
-  tile = $(document.createElement('div'))
-  tile.classify('tile ice')
-  tile.left((tileWidth * (this.numCols() / 2)) - 10)
-  row.appendChild(tile)
-
   row.classify('row snow')
+  this.updateRow(row)
   return row
 }
 
