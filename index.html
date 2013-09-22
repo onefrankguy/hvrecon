@@ -67,18 +67,21 @@ p {
 .ice2snow-left {
   background: url(img/ice.png) 0 0 repeat;
 }
-.ice2snow-left:before {
-  content: "";
-  position: relative;
-  display: block;
-  height: 20px;
-  width: 20px;
-  background: url(img/terrain.png) 0 -40px no-repeat;
-}
 .ice2snow-top {
   background: url(img/ice2snow-top.png) 0 0 repeat;
 }
-.ice2snow-top:before {
+.ice2snow-bottom {
+  background: url(img/ice2snow-bottom.png) 0 0 repeat;
+}
+.ice2snow-top-fill,
+.ice2snow-bottom-fill {
+  background: url(img/ice.png) 0 0 repeat;
+}
+.ice2snow-left:before,
+.ice2snow-top:before,
+.ice2snow-top-fill:before,
+.ice2snow-bottom:before,
+.ice2snow-bottom-fill:before {
   content: "";
   position: relative;
   display: block;
@@ -86,38 +89,20 @@ p {
   width: 20px;
   background: url(img/terrain.png) 0 0 no-repeat;
 }
-.ice2snow-top-fill {
-  background: url(img/ice.png) 0 0 repeat;
+.ice2snow-left:before {
+  background-position: 0 -40px;
+}
+.ice2snow-top:before {
+  background-position: 0 0;
 }
 .ice2snow-top-fill:before {
-  content: "";
-  position: relative;
-  display: block;
-  height: 20px;
-  width: 20px;
-  background: url(img/terrain.png) -40px -120px no-repeat;
-}
-.ice2snow-bottom {
-  background: url(img/ice2snow-bottom.png) 0 0 repeat;
+  background-position: -40px -120px;
 }
 .ice2snow-bottom:before {
-  content: "";
-  position: relative;
-  display: block;
-  height: 20px;
-  width: 20px;
-  background: url(img/terrain.png) 0 -80px no-repeat;
-}
-.ice2snow-bottom-fill {
-  background: url(img/ice.png) 0 0 repeat;
+  background-position: 0 -80px;
 }
 .ice2snow-bottom-fill:before {
-  content: "";
-  position: relative;
-  display: block;
-  height: 20px;
-  width: 20px;
-  background: url(img/terrain.png) -40px -160px no-repeat;
+  background-position: -40px -160px;
 }
 #copter {
   display: block;
@@ -602,7 +587,7 @@ function randBetween (min, max) {
 }
 
 function generate () {
-  var base = mapWidth * 0.5
+  var base = mapWidth / 2
     , rand_max = 1.0
     , line = null
     , mid = null
@@ -630,7 +615,7 @@ function generate () {
     }
     merged = []
     lines = merged.concat.apply(merged, lines)
-    rand_max *= 0.5
+    rand_max /= 2
   }
 }
 
