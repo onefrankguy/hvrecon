@@ -517,7 +517,7 @@ window.jQuery = root
 
 var mapHeight = 0
   , mapWidth = 0
-  , tileIndex = 0
+  , tileIndex = -1
   , tiles = []
   , lines = []
 
@@ -596,14 +596,21 @@ Coast.width = function (value) {
   mapWidth = value
 }
 
+Coast.prev = function () {
+  var value = tiles[tileIndex]
+  if (value === undefined) {
+    value = this.width() / 2
+  }
+  return value
+}
+
 Coast.next = function () {
+  tileIndex += 1
   if (tileIndex >= tiles.length) {
     generate()
     tileIndex = 0
   }
-  var value = tiles[tileIndex]
-  tileIndex += 1
-  return value
+  return tiles[tileIndex]
 }
 
 })(window.Coast = window.Coast || {})
@@ -643,11 +650,13 @@ Terrain.numCols = function () {
 }
 
 Terrain.updateRow = function (row) {
-  row = $(row)
   var tile = $(document.createElement('div'))
+    , prev = Coast.prev()
+    , next = Coast.next()
+
   tile.classify('tile ice')
-  tile.left((tileWidth * Coast.next()) - 10)
-  row.html('').appendChild(tile)
+  tile.left((tileWidth * next) - 10)
+  $(row).html('').appendChild(tile)
 }
 
 Terrain.makeRow = function () {
