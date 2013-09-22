@@ -442,7 +442,6 @@ Well you'll figure it out.</p>
 </div>
 <p id="odometer">0</p>
 </div>
-<p id="fps">FPS: 0</p>
 <div class="credits">
   <p>Design <abbr title="and">&amp;</abbr> dev by <a href="http://frankmitchell.org/">Frank Mitchell</a> for <a href="http://js13kgames.com/">js13kGames</a></p>
   <p>&ldquo;<a href="http://lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html">Hard Vacuum</a>&rdquo; art by Daniel Cook (<a href="http://lostgarden.com/">lostgarden.com</a>)</p>
@@ -1123,7 +1122,6 @@ var lastFuelUpdate = 0;
 var updateFuel = function () {
   var now = Date.now();
   if (now - lastFuelUpdate > 1000) {
-    $('#fps').innerHTML = 'FPS: '+Math.round(1 / Timer.delta);
     powerDown(fuelCost);
     lastFuelUpdate = now;
   }
