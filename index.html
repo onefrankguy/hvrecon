@@ -633,11 +633,10 @@ Coast.width = function (value) {
 }
 
 Coast.prev = function () {
-  var value = tiles[tileIndex]
-  if (value === undefined) {
-    value = this.width() / 2
+  if (tileIndex < 0 || tileIndex >= tiles.length) {
+    return this.width() / 2
   }
-  return value
+  return tiles[tileIndex]
 }
 
 Coast.next = function () {
@@ -986,7 +985,7 @@ var hitsAnyIcicle = function (x, y) {
 };
 
 var hitsEdge = function (index) {
-  return index < 1 || index >= Terrain.numCols() - 2;
+  return index < 1 || index >= Coast.prev();
 };
 
 var addIcicle = function (element) {
