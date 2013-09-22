@@ -712,31 +712,31 @@ Terrain.updateRow = function (row) {
   // Turn the ice into snow
   if (next > prev) {
     tile.classify('tile ice2snow-bottom')
-    tile.left(tileWidth * prev)
+    tile.left((tileWidth * prev) + 10)
     tile.width(tileWidth * (next - prev))
     row.appendChild(tile)
     fill = $(document.createElement('div'))
     fill.classify('tile ice2snow-bottom-fill')
-    fill.left(tileWidth * next)
+    fill.left((tileWidth * next) + 10)
     fill.width(tileWidth * (this.numCols() - next))
     row.appendChild(fill)
   }
   // Turn the snow into ice
   else if (next < prev) {
     tile.classify('tile ice2snow-top')
-    tile.left(tileWidth * next)
+    tile.left((tileWidth * next) + 10)
     tile.width(tileWidth * (prev - next))
     row.appendChild(tile)
     fill = $(document.createElement('div'))
     fill.classify('tile ice2snow-top-fill')
-    fill.left(tileWidth * prev)
+    fill.left((tileWidth * prev) + 10)
     fill.width(tileWidth * (this.numCols() - prev))
     row.appendChild(fill)
   }
   // Same as it ever was
   else {
     tile.classify('tile ice2snow-left')
-    tile.left(tileWidth * prev);
+    tile.left((tileWidth * prev) + 10);
     tile.width(tileWidth * (this.numCols() - next))
     row.appendChild(tile)
   }
