@@ -457,6 +457,31 @@ function Fn (selector) {
   return this
 }
 
+Fn.prototype.position = function (key, value) {
+  if (this.element) {
+    if (value === undefined) {
+      return parseInt(this.element.style[key], 10)
+    }
+    value = (value + 0.5) | 0
+    this.element.style[key] = value + 'px'
+  }
+  return this
+}
+
+Fn.prototype.height = function (value) {
+  return this.position('height', value)
+}
+
+Fn.prototype.width = function (value) {
+  return this.position('width', value)
+}
+
+Fn.prototype.appendChild = function (kid) {
+  if (this.element) {
+    this.element.appendChild(kid)
+  }
+}
+
 Fn.prototype.unwrap = function () {
   return this.element
 }
@@ -472,7 +497,8 @@ window.jQuery = root
 ;(function (Terrain) {
 "use strict";
 
-var canvasHeight = 0
+var $ = window.jQuery
+  , canvasHeight = 0
   , canvasWidth = 0
   , tileHeight = 20
   , tileWidth = 20
@@ -497,6 +523,21 @@ Terrain.numRows = function () {
 
 Terrain.numCols = function () {
   return this.width() / tileWidth;
+}
+
+Terrain.initialize = function (selector) {
+  var element = $(selector)
+    , row = null
+    , i = 0
+
+  element.width(this.width())
+  element.height(this.numRows() * tileHeight)
+
+  for (i = 0; i < this.numRows(); i += 1) {
+    row = document.createElement("div")
+    row.className = 'row'
+    element.appendChild(row)
+  }
 }
 
 })(window.Terrain = window.Terrain || {})
@@ -811,15 +852,7 @@ var setup = function () {
   viewport.style.height = Terrain.height()+"px";
   viewport.style.width = Terrain.width()+"px";
 
-  var terrain = $("#terrain");
-  terrain.style.width = viewport.style.width;
-  terrain.style.height = (Terrain.numRows() * tileHeight)+"px";
-
-  for (i = 0; i < Terrain.numRows(); i += 1) {
-    row = document.createElement("div");
-    row.className = "row";
-    terrain.appendChild(row);
-  }
+  Terrain.initialize('#terrain');
 
   addTouch(viewport, onBoardTouch, updateIcicles);
 };
