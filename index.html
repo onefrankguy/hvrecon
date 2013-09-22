@@ -87,22 +87,22 @@ p {
   display: block;
   height: 20px;
   width: 20px;
-  background: url(img/terrain.png) 0 0 no-repeat;
+  background: url(img/icicles.png) 0 0 no-repeat;
 }
 .ice2snow-left:before {
-  background-position: 0 -40px;
+  background-position: -100px -20px;
 }
 .ice2snow-top:before {
-  background-position: 0 0;
+  background-position: -100px 0;
 }
 .ice2snow-top-fill:before {
-  background-position: -40px -120px;
+  background-position: -180px -20px;
 }
 .ice2snow-bottom:before {
-  background-position: 0 -80px;
+  background-position: -100px -40px;
 }
 .ice2snow-bottom-fill:before {
-  background-position: -40px -160px;
+  background-position: -180px 0;
 }
 #copter {
   display: block;
@@ -609,7 +609,7 @@ function generate () {
       mid = midpoint(line)
       length = randBetween(-rand_max, rand_max) * mapWidth
       mid.y += Math.round(length)
-      mid.y = clamp(mid.y, 4, mapWidth - 1)
+      mid.y = clamp(mid.y, mapWidth / 2, mapWidth - 1)
       tiles[mid.x] = mid.y
       lines[i] = [mkline(line.start, mid), mkline(mid, line.end)]
     }
