@@ -487,6 +487,13 @@ Fn.prototype.appendChild = function (kid) {
   }
 }
 
+Fn.prototype.html = function (value) {
+  if (this.element) {
+    this.element.innerHTML = value
+  }
+  return this
+}
+
 Fn.prototype.classify = function (klass) {
   if (this.element) {
     this.element.className = klass
@@ -636,10 +643,11 @@ Terrain.numCols = function () {
 }
 
 Terrain.updateRow = function (row) {
+  row = $(row)
   var tile = $(document.createElement('div'))
   tile.classify('tile ice')
   tile.left((tileWidth * Coast.next()) - 10)
-  row.appendChild(tile)
+  row.html('').appendChild(tile)
 }
 
 Terrain.makeRow = function () {
@@ -960,6 +968,7 @@ var updateRow = function (element) {
       removeElement(sprite);
     }
   }
+  Terrain.updateRow(element);
   addIcicle(element);
 };
 
