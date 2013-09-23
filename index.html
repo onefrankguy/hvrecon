@@ -983,7 +983,7 @@ var hitsAnyIcicle = function (x, y) {
 };
 
 var hitsEdge = function (index) {
-  return index < 1 || index >= Coast.prev();
+  return index < 1 || index >= Coast.prev() || index >= Terrain.numCols() - 2;
 };
 
 var addIcicle = function (element) {
