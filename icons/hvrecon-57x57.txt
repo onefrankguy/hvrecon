@@ -1,0 +1,55 @@
+# mtPaint layers
+1
+4
+snow-57x57.png
+Background
+1
+0
+0
+1
+0
+100
+border-top-57x57.png
+Border Top
+1
+0
+0
+1
+0
+100
+icicle-57x57.png
+Icicle
+1
+0
+0
+1
+0
+100
+copter-57x57.png
+Copter
+1
+0
+0
+1
+0
+100
+border-bottom-57x57.png
+Border Bottom
+1
+0
+0
+1
+0
+100
+# mtPaint animation
+1
+100
+frames
+f
+10
+0
+0
+0
+0
+0
+0

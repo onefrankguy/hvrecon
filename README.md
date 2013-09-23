@@ -9,7 +9,7 @@ you have to grab as much intel as you can before your fuel cells run dry.
 ## Graphics ##
 
 Daniel Cook's "[Hard Vaccum][]" tileset is used as the basis for the graphics.
-ImageMagick and mtpaint get abused heavily to get the look I want.
+ImageMagick and mtPaint get abused heavily to get the look I want.
 
 ## Development ##
 
@@ -23,6 +23,8 @@ A bunch of stuff isn't in, mostly due to time and size constraints.
 * Copter animations
 * Variable terrain
 * Icicle telport FX
+* More mission variety
+* Tweetable high scores
 
 ### Notes ###
 
@@ -31,7 +33,7 @@ ImageMagick command line to remove a common background from icons.
 ~~~bash
 convert icon.png background.png \
 \( -clone 0 -clone 1 -compose difference -composite -threshold 0 \) \
--delete 1 -compose copy_opacity -composite icon-no-bg.png
+-delete 1 -alpha off -compose copy_opacity -composite icon-no-bg.png
 ~~~
 
 ## License ##

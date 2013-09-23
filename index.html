@@ -2,10 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+<meta name="viewport" content="initial-scale=1, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-<title>Hard Vacuum: Recon</title>
+<title>HV Recon</title>
+<link rel="apple-touch-icon-precomposed" href="img/hvrecon-57x57.png"/>
 <style type="text/css">
 * {
   cursor: default;
@@ -26,10 +27,10 @@ html {
 }
 body {
   background: #313431;
-  color: #fff;
+  color: #ded8de;
 }
 a {
-  color: #fff;
+  color: #add3f7;
   text-decoration: none;
 }
 p {
@@ -44,13 +45,64 @@ p {
   position: relative;
   overflow: hidden;
 }
-#background {
-  position: relative;
-  display: block;
-}
 #terrain {
   position: absolute;
-  background: url(img/snow.png);
+  pointer-events: none;
+}
+.row {
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 100%;
+}
+.tile {
+  position: absolute;
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+.snow {
+  background: url(img/snow.png) 10px 0 repeat-x;
+}
+.ice2snow-left {
+  background: url(img/snow.png) 0 -40px repeat-x;
+}
+.ice2snow-top {
+  background: url(img/snow.png) 0 -20px repeat-x;
+}
+.ice2snow-bottom {
+  background: url(img/snow.png) 0 -60px repeat-x;
+}
+.ice2snow-top-fill,
+.ice2snow-bottom-fill {
+  background: url(img/snow.png) 0 -40px repeat-x;
+}
+.ice2snow-left:before,
+.ice2snow-top:before,
+.ice2snow-top-fill:before,
+.ice2snow-bottom:before,
+.ice2snow-bottom-fill:before {
+  content: "";
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 20px;
+  background: url(img/icicles.png) 0 0 no-repeat;
+}
+.ice2snow-left:before {
+  background-position: -80px -20px;
+}
+.ice2snow-top:before {
+  background-position: -80px 0;
+}
+.ice2snow-top-fill:before {
+  background-position: -160px -20px;
+}
+.ice2snow-bottom:before {
+  background-position: -80px -40px;
+}
+.ice2snow-bottom-fill:before {
+  background-position: -160px 0;
 }
 #copter {
   display: block;
@@ -66,10 +118,7 @@ p {
   height: 100%;
   width: 280px;
   background: #424542;
-  color: #fff;
   padding: 10px 20px;
-  -moz-hyphens: auto;
-  hyphens: auto;
   -webkit-transition: top 1.5s ease-in-out;
      -moz-transition: top 1.5s ease-in-out;
        -o-transition: top 1.5s ease-in-out;
@@ -100,69 +149,100 @@ p {
 .dismiss {
   top: 100%;
 }
-#interface-left {
+.interface {
   display: block;
   position: absolute;
+  pointer-events: none;
+  background-image: url(img/interface.png);
+  background-repeat: no-repeat;
+}
+.interface.border-left {
   height: 100%;
-  width: 13px;
-  top: 0px;
-  left: 0px;
-  background: url(img/interface-left.png);
+  width: 0;
+  top: 0;
+  left: 0;
+  box-shadow:
+    0 0 0 1px #000400,
+    0 0 0 2px #636563,
+    0 0 0 3px #424542,
+    0 0 0 4px #313431,
+    0 0 0 5px #294963,
+    0 0 0 6px #636563,
+    0 0 0 7px #737573,
+    0 0 0 9px #525552,
+    0 0 0 10px #101410,
+    0 0 0 12px #212421,
+    0 0 0 13px #313431;
 }
-#interface-right {
-  display: block;
-  position: absolute;
+.interface.border-right {
   height: 100%;
-  width: 10px;
-  top: 0px;
-  right: 0px;
-  background: url(img/interface-right.png);
+  width: 0;
+  top: 0;
+  right: 0;
+  box-shadow:
+    0 0 0 1px  #000400,
+    0 0 0 2px  #424542,
+    0 0 0 3px  #313431,
+    0 0 0 4px  #6b7d94,
+    0 0 0 5px  #525552,
+    0 0 0 6px  #737573,
+    0 0 0 7px  #313431,
+    0 0 0 10px #737573;
 }
-#interface-top {
-  display: block;
-  position: absolute;
-  height: 9px;
+.interface.border-top {
+  height: 0;
   width: 100%;
-  top: 0px;
-  left: 0px;
-  background: url(img/interface-top.png);
+  top: 0;
+  left: 0;
+  box-shadow:
+    0 0 0 1px  #000400,
+    0 0 0 2px  #737573,
+    0 0 0 5px  #525552,
+    0 0 0 8px  #212421,
+    0 0 0 9px  #313431;
 }
-#interface-bottom {
-  display: block;
-  position: absolute;
-  height: 10px;
+.interface.border-bottom {
+  height: 0;
   width: 100%;
-  bottom: 0px;
-  left: 0px;
-  background: url(img/interface-bottom.png);
+  bottom: 0;
+  left: 0;
+  box-shadow:
+    0 0 0 1px  #000400,
+    0 0 0 2px  #313431,
+    0 0 0 3px  #424542,
+    0 0 0 5px  #525552,
+    0 0 0 6px  #424542,
+    0 0 0 8px  #525552,
+    0 0 0 9px  #636563,
+    0 0 0 10px #313431;
 }
-#upper-left {
-  display: block;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  pointer-events: none;
+.interface.corner-top-left {
+  height: 40px;
+  width: 68px;
+  top: 0;
+  left: 0;
+  background-position: 0 0;
 }
-#upper-right {
-  display: block;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  pointer-events: none;
+.interface.corner-top-right {
+  height: 28px;
+  width: 68px;
+  top: 0;
+  right: 0;
+  background-position: -73px 0;
 }
-#lower-left {
-  display: block;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  pointer-events: none;
+.interface.corner-bottom-right {
+  height: 54px;
+  width: 69px;
+  bottom: 0;
+  right: 0;
+  background-position: -72px -30px;
 }
-#lower-right {
-  display: block;
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  pointer-events: none;
+.interface.corner-bottom-left {
+  height: 44px;
+  width: 72px;
+  bottom: 0;
+  left: 0;
+  background-position: 0 -40px;
 }
 #power-cells {
   display: block;
@@ -186,30 +266,51 @@ p {
   text-shadow: 1px 1px 0px #000400;
 }
 .credits {
-  margin-top: 1.5rem;
+  margin: 1.5rem 0.4rem;
   text-align: right;
 }
-.snow {
-  background-image: url(img/snow.png);
-}
+.crater,
 .rock,
 .icicle1,
 .icicle2,
 .icicle3 {
-  background: url(img/icicles.png) 0 0 no-repeat;
   position: absolute;
   display: block;
   height: 60px;
   width: 40px;
+  pointer-events: auto;
 }
-.rock {
-  background-position: -120px 0;
+.crater:before,
+.rock:before,
+.icicle1:before,
+.icicle2:before,
+.icicle3:before {
+  background: url(img/icicles.png) 0 0 no-repeat;
+  position: relative;
+  top: 20px;
+  left: 10px;
+  content: "";
+  display: block;
+  height: 20px;
+  width: 20px;
 }
-.icicle1 {
-  background-position: -80px 0;
+.crater:before {
+  background-position: -40px -20px;
 }
-.icicle2 {
+.rock:before {
   background-position: -40px 0;
+}
+.icicle1:before {
+  background-position: -20px -40px;
+}
+.icicle2:before {
+  top: 0;
+  height: 40px;
+  background-position: -20px 0;
+}
+.icicle3:before {
+  top: 0;
+  height: 40px;
 }
 .bar {
   display: block;
@@ -308,26 +409,24 @@ p {
 <body>
 <div id="wrapper">
 <div id="viewport">
-<div id="background">
 <div id="terrain" class="terrain"></div>
-</div>
 <img id="copter" src="img/copter.png"/>
 <div id="mission" class="dialog active">
 <p>Look, I don't know what you did to piss Henley off, but she's given you
 recon duty. Scan rocks as you fly over them, and pick up anything
-iteresting.</p>
+interesting.</p>
 <p>Now the NAVI on that copter of yours is a little quirky.  It&hellip;
 Well you'll figure it out.</p>
 <p>Good luck!</p>
 </div>
-<div id="interface-left"></div>
-<div id="interface-right"></div>
-<div id="interface-top"></div>
-<div id="interface-bottom"></div>
-<img id="upper-left" src="img/interface-upper-left.png"/>
-<img id="upper-right" src="img/interface-upper-right.png"/>
-<img id="lower-left" src="img/interface-lower-left.png"/>
-<img id="lower-right" src="img/interface-lower-right.png"/>
+<div class="interface border-left"></div>
+<div class="interface border-right"></div>
+<div class="interface border-top"></div>
+<div class="interface border-bottom"></div>
+<div class="interface corner-top-left"></div>
+<div class="interface corner-top-right"></div>
+<div class="interface corner-bottom-right"></div>
+<div class="interface corner-bottom-left"></div>
 <div id="power-cells" class="bar">
   <span id="battery0" class="button lght0 lvl8"></span>
   <span id="battery1" class="button lght1 lvl8"></span>
@@ -376,23 +475,295 @@ Well you'll figure it out.</p>
   }
 }());
 
+;(function () {
+"use strict";
+
+function Fn (selector) {
+  if (selector instanceof Fn) {
+    return selector
+  }
+  this.element = selector
+  if (typeof selector === 'string') {
+    if (selector.indexOf('#') === 0) {
+      this.element = document.getElementById(selector.slice(1))
+    }
+  }
+  return this
+}
+
+Fn.prototype.position = function (key, value) {
+  if (this.element) {
+    if (value === undefined) {
+      return parseInt(this.element.style[key], 10)
+    }
+    value = (value + 0.5) | 0
+    this.element.style[key] = value + 'px'
+  }
+  return this
+}
+
+Fn.prototype.height = function (value) {
+  return this.position('height', value)
+}
+
+Fn.prototype.width = function (value) {
+  return this.position('width', value)
+}
+
+Fn.prototype.left = function (value) {
+  return this.position('left', value)
+}
+
+Fn.prototype.appendChild = function (kid) {
+  if (this.element) {
+    kid = new Fn(kid)
+    this.element.appendChild(kid.unwrap())
+  }
+}
+
+Fn.prototype.html = function (value) {
+  if (this.element) {
+    this.element.innerHTML = value
+  }
+  return this
+}
+
+Fn.prototype.classify = function (klass) {
+  if (this.element) {
+    this.element.className = klass
+  }
+}
+
+Fn.prototype.unwrap = function () {
+  return this.element
+}
+
+function root (selector) {
+  return new Fn(selector)
+}
+
+window.jQuery = root
+
+})()
+
+;(function (Coast) {
+"use strict";
+
+var mapHeight = 0
+  , mapWidth = 0
+  , tileIndex = -1
+  , tiles = []
+  , lines = []
+
+function mkpoint (x, y) {
+  return { x: Math.round(x), y: Math.round(y) }
+}
+
+function mkline (start, end) {
+  return { start: start, end: end }
+}
+
+function midpoint (line) {
+  var x = (line.start.x + line.end.x) / 2
+    , y = (line.start.y + line.end.y) / 2
+  return mkpoint(x, y)
+}
+
+function clamp(value, min, max) {
+  if (value < min) {
+    return min
+  }
+  if (value > max) {
+    return max
+  }
+  return value
+}
+
+function randBetween (min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function generate () {
+  var base = mapWidth / 2
+    , rand_max = 1.0
+    , line = null
+    , mid = null
+    , length = 0
+    , merged = []
+    , i = 0
+
+  tiles = []
+  for (i = 0; i < mapHeight; i += 1) {
+    tiles.push(base)
+  }
+
+  lines = []
+  lines.push(mkline(mkpoint(0, base), mkpoint(mapHeight - 1, base)))
+
+  while (lines.length < tiles.length) {
+    for (i = 0; i < lines.length; i += 1) {
+      line = lines[i]
+      mid = midpoint(line)
+      length = randBetween(-rand_max, rand_max) * mapWidth
+      mid.y += Math.round(length)
+      mid.y = clamp(mid.y, mapWidth / 2, mapWidth - 1)
+      tiles[mid.x] = mid.y
+      lines[i] = [mkline(line.start, mid), mkline(mid, line.end)]
+    }
+    merged = []
+    lines = merged.concat.apply(merged, lines)
+    rand_max /= 2
+  }
+}
+
+Coast.height = function (value) {
+  if (value === undefined) {
+    return mapHeight
+  }
+  mapHeight = value
+}
+
+Coast.width = function (value) {
+  if (value === undefined) {
+    return mapWidth
+  }
+  mapWidth = value
+}
+
+Coast.prev = function () {
+  if (tileIndex < 0 || tileIndex >= tiles.length) {
+    return this.width() / 2
+  }
+  return tiles[tileIndex]
+}
+
+Coast.next = function () {
+  tileIndex += 1
+  if (tileIndex >= tiles.length) {
+    generate()
+    tileIndex = 0
+  }
+  return tiles[tileIndex]
+}
+
+})(window.Coast = window.Coast || {})
+
+;(function (Terrain) {
+"use strict";
+
+var $ = window.jQuery
+  , Coast = window.Coast
+  , canvasHeight = 0
+  , canvasWidth = 0
+  , tileHeight = 20
+  , tileWidth = 20
+
+Terrain.width = function (value) {
+  if (value === undefined) {
+    return canvasWidth
+  }
+  canvasWidth = value
+  Coast.width(canvasWidth / tileWidth)
+}
+
+Terrain.height = function (value) {
+  if (value === undefined) {
+    return canvasHeight
+  }
+  canvasHeight = value
+  Coast.height((canvasHeight / tileHeight) + 1)
+}
+
+Terrain.numRows = function () {
+  return (this.height() / tileHeight) + 1
+}
+
+Terrain.numCols = function () {
+  return this.width() / tileWidth;
+}
+
+Terrain.updateRow = function (row) {
+  var tile = $(document.createElement('div'))
+    , fill = null
+    , prev = Coast.prev()
+    , next = Coast.next()
+
+  row = $(row).html('')
+
+  // Turn the ice into snow
+  if (next > prev) {
+    tile.classify('tile ice2snow-bottom')
+    tile.left((tileWidth * prev) + 10)
+    tile.width(tileWidth * (next - prev))
+    row.appendChild(tile)
+    fill = $(document.createElement('div'))
+    fill.classify('tile ice2snow-bottom-fill')
+    fill.left((tileWidth * next) + 10)
+    fill.width(tileWidth * (this.numCols() - next))
+    row.appendChild(fill)
+  }
+  // Turn the snow into ice
+  else if (next < prev) {
+    tile.classify('tile ice2snow-top')
+    tile.left((tileWidth * next) + 10)
+    tile.width(tileWidth * (prev - next))
+    row.appendChild(tile)
+    fill = $(document.createElement('div'))
+    fill.classify('tile ice2snow-top-fill')
+    fill.left((tileWidth * prev) + 10)
+    fill.width(tileWidth * (this.numCols() - prev))
+    row.appendChild(fill)
+  }
+  // Same as it ever was
+  else {
+    tile.classify('tile ice2snow-left')
+    tile.left((tileWidth * prev) + 10);
+    tile.width(tileWidth * (this.numCols() - next))
+    row.appendChild(tile)
+  }
+
+}
+
+Terrain.makeRow = function () {
+  var row = $(document.createElement('div'))
+  row.classify('row snow')
+  this.updateRow(row)
+  return row
+}
+
+Terrain.initialize = function (selector) {
+  var element = $(selector)
+    , row = null
+    , i = 0
+
+  element.width(this.width())
+  element.height(this.numRows() * tileHeight)
+
+  for (i = 0; i < this.numRows(); i += 1) {
+    element.appendChild(this.makeRow())
+  }
+}
+
+})(window.Terrain = window.Terrain || {})
+
+Terrain.height(440)
+Terrain.width(320)
+
 var $ = function (selector) {
-  if (selector.indexOf("#") === 0) {
-    return document.getElementById(selector.slice(1));
-  }
-  if (selector.indexOf(".") === 0) {
-    return document.getElementByClassName(selector.slice(1));
-  }
-  return null;
+  return jQuery(selector).unwrap();
 };
 
 var setTop = function (element, value) {
   if (element) {
     element.setAttribute("data-top", value);
-    if (element.style) {
-      value = (value + 0.5) | 0;
-      element.style.top = value+"px";
-    }
+  }
+}
+
+var snapTop = function (element) {
+  var value = getTop(element);
+  if (element && element.style) {
+    value = (value + 0.5) | 0;
+    element.style.top = value+"px";
   }
 };
 
@@ -461,14 +832,10 @@ Timer.reset = function () {
   Timer.then = null;
 };
 
-var canvasHeight = 440;
-var canvasWidth = 320;
 var tileHeight = 20;
 var tileWidth = 20;
-var numCols = canvasWidth / tileWidth;
-var numRows = (canvasHeight / tileHeight) + 1;
 var copterSpeed = 20;
-var maxIcicles = numRows;
+var maxIcicles = Terrain.numRows()
 var cachedIcicles = [];
 var fuelCost = 0.675;
 var maxPower = 81;
@@ -496,6 +863,12 @@ var isIcicle = function (element) {
     hasClass(element, "icicle2") ||
     hasClass(element, "icicle3") ||
     hasClass(element, "rock")
+  );
+};
+
+var isCrater = function (element) {
+  return (
+    hasClass(element, "crater")
   );
 };
 
@@ -541,7 +914,7 @@ var randomValue = function (array) {
 var icicleSize = function (element) {
   if (!element.hasAttribute("data-icicle-size")) {
     var offset = getTop(element);
-    var zone = Math.ceil(canvasHeight / 3);
+    var zone = Math.ceil(Terrain.height() / 3);
     var types = [1, 1, 1, 1, 2, 2, 3];
     if (offset <= zone * 2) {
         types = [1, 1, 2, 2, 2, 2, 3];
@@ -583,25 +956,26 @@ var updateIcicles = function () {
   }, reactTime);
 };
 
-var icicleCenter = function (element) {
-  var x = getLeft(element) + 20;
-  var y = getTop(element) + 20;
-  return { x: x, y: y };
-};
-
-var icicleDistance = function (element, x, y) {
-  var center = icicleCenter(element);
-  var dx = center.x - x;
-  var dy = center.y - y;
-  return Math.sqrt((dx * dx) + (dy * dy));
+var overlapsIcicle = function (element, bl, bt) {
+  // Two rectangles do not  intersect if
+  // * A's left edge is to the right of B's right edge
+  // * A's right edge is to the left of B's left edge
+  // * A's top edge is below B's bottom edge
+  // * A's bottom edge is above B's top edge
+  // Invert those conditions with De Morgan's Law to test for overlap
+  var al = getLeft(element);
+  var at = getTop(element);
+  var ar = al + 40;
+  var ab = at + 60;
+  var br = bl + 40;
+  var bb = bt + 60;
+  return al < br && ar > bl && at < bb && ab > bt;
 };
 
 var hitsAnyIcicle = function (x, y) {
-  var max = Math.sqrt((40 * 40) + (40 * 40));
   var i = 0;
   for (i = 0; i < cachedIcicles.length; i += 1) {
-    var dist = icicleDistance(cachedIcicles[i], x, y);
-    if (dist <= max) {
+    if (overlapsIcicle(cachedIcicles[i], x, y)) {
       return true;
     }
   }
@@ -609,20 +983,20 @@ var hitsAnyIcicle = function (x, y) {
 };
 
 var hitsEdge = function (index) {
-  return index < 2 || index >= numCols - 2;
+  return index < 1 || index >= Coast.prev() || index >= Terrain.numCols() - 2;
 };
 
 var addIcicle = function (element) {
   if (cachedIcicles.length >= maxIcicles) {
     return;
   }
-  var index = Math.floor(Math.random() * numCols);
+  var index = Math.floor(Math.random() * Terrain.numCols());
   if (hitsEdge(index)) {
     return;
   }
   var possible = [];
-  for (index = 0; index < numCols; index += 1) {
-    if (!hitsAnyIcicle(index * tileWidth, canvasHeight) && !hitsEdge(index)) {
+  for (index = 0; index < Terrain.numCols(); index += 1) {
+    if (!hitsAnyIcicle(index * tileWidth, Terrain.height()) && !hitsEdge(index)) {
       possible.push(index);
     }
   }
@@ -631,11 +1005,16 @@ var addIcicle = function (element) {
   }
   index = randomValue(possible);
   var icicle = document.createElement("div");
-  icicle.setAttribute("class", "rock");
-  setTop(icicle, canvasHeight);
+  icicle.className = "rock";
+  icicle.style.top = -tileHeight+"px";
   icicle.style.left = (index * tileWidth)+"px";
-  $("#background").appendChild(icicle);
+  setTop(icicle, Terrain.height());
+  element.appendChild(icicle);
   cachedIcicles.push(icicle);
+};
+
+var removeElement = function (element) {
+  element.parentNode.removeChild(element);
 };
 
 var removeIcicle = function (element) {
@@ -647,18 +1026,24 @@ var removeIcicle = function (element) {
   if (index >= 0) {
     cachedIcicles.splice(index, 1);
   }
-  $("#background").removeChild(element);
+  element.className = "crater";
 };
 
-var updateIcicle = function (element) {
-  if (isIcicle(element)) {
-    removeIcicle(element);
-    return;
+var updateRow = function (element) {
+  var i = 0;
+  var sprites = element.childNodes;
+  var sprite = null;
+  for (i = 0; i < sprites.length; i += 1) {
+    sprite = sprites[i];
+    if (isIcicle(sprite)) {
+      removeIcicle(sprite);
+    }
+    if (isCrater(sprite)) {
+      removeElement(sprite);
+    }
   }
-  if (isTerrain(element)) {
-    addIcicle(element);
-    return;
-  }
+  Terrain.updateRow(element);
+  addIcicle(element);
 };
 
 var running = function () {
@@ -666,16 +1051,15 @@ var running = function () {
 };
 
 var setup = function () {
-  var y = 0;
+  var i = 0;
+  var row = null;
+
   var viewport = $("#viewport");
-  viewport.style.height = canvasHeight+"px";
-  viewport.style.width = canvasWidth+"px";
-  var background = $("#background");
-  background.style.width = viewport.style.width;
-  background.style.height = viewport.style.height;
-  var terrain = $("#terrain");
-  terrain.style.width = viewport.style.width;
-  terrain.style.height = (numRows * tileHeight)+"px";
+  viewport.style.height = Terrain.height()+"px";
+  viewport.style.width = Terrain.width()+"px";
+
+  Terrain.initialize('#terrain');
+
   addTouch(viewport, onBoardTouch, updateIcicles);
 };
 
@@ -702,18 +1086,10 @@ var resetMission = function () {
 };
 
 var moveUp = function (element, delta) {
-  if (!element || !element.style) {
-    return;
-  }
   var offset = getTop(element) + delta;
   var warp = false;
   if (offset < -tileHeight) {
-    if (isIcicle(element)) {
-      offset = canvasHeight + delta;
-    }
-    if (isTerrain(element)) {
-      offset = delta;
-    }
+    offset = delta;
     warp = true;
   }
   setTop(element, offset);
@@ -764,18 +1140,23 @@ var render = function (time) {
   }
   requestAnimationFrame(render);
   Timer.tick(time);
-  var rows = $("#background").childNodes;
-  var y = 0;
+  var terrain = $("#terrain");
+  var row = null;
+  var i = 0;
   var offset = -copterSpeed * Timer.delta;
   copterDistance += -offset;
   if (copterDistance >= 10000) {
     copterDistance = 0;
   }
-  for (y = 0; y < rows.length; y += 1) {
-    if (moveUp(rows[y], offset)) {
-      updateIcicle(rows[y]);
-    }
+  for (i = 0; i < cachedIcicles.length; i += 1) {
+    moveUp(cachedIcicles[i], offset);
   }
+  if (moveUp(terrain, offset)) {
+    row = terrain.removeChild(terrain.firstChild);
+    updateRow(row);
+    terrain.appendChild(row);
+  }
+  snapTop(terrain);
   updateFuel();
   updatePower();
   updateOdometer();
