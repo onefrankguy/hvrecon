@@ -9,7 +9,7 @@ you have to grab as much intel as you can before your fuel cells run dry.
 ## Graphics ##
 
 Daniel Cook's "[Hard Vaccum][]" tileset is used as the basis for the graphics.
-ImageMagick and mtpaint get abused heavily to get the look I want.
+ImageMagick and mtPaint get abused heavily to get the look I want.
 
 ## Development ##
 
